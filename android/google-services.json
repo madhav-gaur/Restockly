@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "384031790723",
+    "project_id": "restockly-dev",
+    "storage_bucket": "restockly-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384031790723:android:ec020cd9c2d30666852db6",
+        "android_client_info": {
+          "package_name": "com.example.restockly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384031790723-gg7mr8p4t5pdkplabeogck2u5j59ahc7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.restockly",
+            "certificate_hash": "d43b34f6534a9a8e3727c92668d90542737016d5"
+          }
+        },
+        {
+          "client_id": "384031790723-j95nprgbg8o2ccvtman2qv5l7vlmd8tv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA09cRokoXfsoYsCcyCjFikjItN9KNpNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384031790723-j95nprgbg8o2ccvtman2qv5l7vlmd8tv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "384031790723-nrnnm55uim95hj7ikdirfhn46gresppc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.restockly"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

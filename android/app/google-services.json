@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "384031790723",
+    "project_id": "restockly-dev",
+    "storage_bucket": "restockly-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384031790723:android:ec020cd9c2d30666852db6",
+        "android_client_info": {
+          "package_name": "com.example.restockly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA09cRokoXfsoYsCcyCjFikjItN9KNpNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

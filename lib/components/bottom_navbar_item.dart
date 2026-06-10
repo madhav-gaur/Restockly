@@ -1,0 +1,67 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:restockly/screens/main_screen.dart';
+import 'package:restockly/themes/color_const.dart';
+
+class BottomNavBarItem extends ConsumerWidget {
+  final int idx;
+  final IconData unselectedIcon;
+  final IconData selectedIcon;
+  final String label;
+
+  const BottomNavBarItem({
+    super.key,
+    required this.idx,
+    required this.unselectedIcon,
+    required this.selectedIcon,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    int currIdx = ref.watch(selectedIndex);
+    bool isSelected = currIdx == idx;
+    return GestureDetector(
+      onTap: () {
+        ref.read(selectedIndex.notifier).state = idx;
+      },
+      child: Container(
+        width: 100,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color.fromARGB(255, 207, 233, 255) : null,
+          border: Border.all(
+            color: isSelected
+                ? const Color.fromARGB(255, 188, 224, 255)
+                : Colors.transparent,
+          ),
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: Column(
+          mainAxisAlignment: .center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0),
+              child: Icon(
+                // grade: -25,
+                fontWeight: FontWeight.w100,
+                size: 20,
+                isSelected ? selectedIcon : unselectedIcon,
+                color: isSelected ? primary : Colors.grey.shade600,
+              ),
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: isSelected ? primary : Colors.grey.shade600,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
