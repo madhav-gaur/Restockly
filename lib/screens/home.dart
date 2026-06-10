@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:restockly/constants.dart';
 import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
@@ -17,14 +18,17 @@ class _HomeState extends ConsumerState<Home> {
     return Container(
       child: user.when(
         data: (userData) {
-          return ListView(
-            children: [
-              Text(
-                "Welcome, ${userData?.name.split(" ")[0]}",
-                style: boldTextStyle().copyWith(fontSize: 23),
-              ),
-              Text(userData!.restaurantName, style: smallTextStyle()),
-            ],
+          return Padding(
+            padding: defaultPagePadding(),
+            child: ListView(
+              children: [
+                Text(
+                  "Welcome, ${userData?.name.split(" ")[0]}",
+                  style: boldTextStyle().copyWith(fontSize: 23),
+                ),
+                Text(userData!.restaurantName, style: smallTextStyle()),
+              ],
+            ),
           );
         },
         error: (e, s) {

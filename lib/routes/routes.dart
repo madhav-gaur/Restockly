@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restockly/routes/route_const.dart';
-import 'package:restockly/screens/home.dart';
+import 'package:restockly/screens/add_inventory.dart';
 import 'package:restockly/screens/main_screen.dart';
 import 'package:restockly/screens/onboarding.dart';
 import 'package:restockly/screens/role_selection.dart';
@@ -31,11 +31,11 @@ final GoRouter route = GoRouter(
           .doc(user.uid)
           .get();
       final hasRole = doc.exists && doc.data()?['role'] != null;
-      if (hasRole) {
-        return RouteConst.mainScreen;
-      } else {
+      if (!hasRole) {
         return RouteConst.roleSelection;
       }
+      // user is authenticated and has a role — allow navigation
+      return null;
     }
   },
 
@@ -64,6 +64,11 @@ final GoRouter route = GoRouter(
       name: RouteConst.mainScreen,
       path: '/',
       builder: (context, state) => const MainScreen(),
+    ),
+    GoRoute(
+      name: RouteConst.addInventory,
+      path: "/add-inventory",
+      builder: (context, state) => const AddInventory(),
     ),
   ],
 );

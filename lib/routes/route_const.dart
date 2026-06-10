@@ -4,6 +4,8 @@ class RouteConst {
   static String roleSelection = '/auth/role-selection';
   static String signin = '/auth/signin';
   static String mainScreen = '/';
+  static String inventory = '/inventory';
+  static String addInventory = '/add-inventory';
 
   // static String verifyEmail = '/verify-email';
 }

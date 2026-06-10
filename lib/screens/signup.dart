@@ -91,7 +91,7 @@ class _SignupState extends State<Signup> {
                 child: textFormField(
                   controller: _nameController,
                   labelText: "Full Name",
-                  validadator: (value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "*Required field";
                     }
@@ -105,7 +105,7 @@ class _SignupState extends State<Signup> {
                   controller: _emailController,
                   labelText: "Email",
                   inputType: TextInputType.emailAddress,
-                  validadator: (value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "*Required field";
                     }
@@ -120,7 +120,7 @@ class _SignupState extends State<Signup> {
                   labelText: "Password",
                   isClearButton: false,
                   isObscureText: true,
-                  validadator: (value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "*Required field";
                     }
@@ -138,7 +138,7 @@ class _SignupState extends State<Signup> {
                   labelText: "Comfirm Password",
                   isClearButton: false,
                   isObscureText: true,
-                  validadator: (value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "*Required field";
                     }

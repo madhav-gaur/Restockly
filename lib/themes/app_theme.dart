@@ -12,7 +12,6 @@ class AppTheme {
         scrolledUnderElevation: 0,
         backgroundColor: surface,
         centerTitle: true,
-
         titleTextStyle: TextStyle(
           fontWeight: FontWeight.w600,
           color: textPrimary,

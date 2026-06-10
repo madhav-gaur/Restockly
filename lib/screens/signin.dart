@@ -74,7 +74,7 @@ class _SignupState extends State<Signin> {
                   controller: _emailController,
                   labelText: "Email",
                   inputType: TextInputType.emailAddress,
-                  validadator: (value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "*Required field";
                     }
@@ -89,7 +89,7 @@ class _SignupState extends State<Signin> {
                   labelText: "Password",
                   isClearButton: false,
                   isObscureText: true,
-                  validadator: (value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "*Required field";
                     }

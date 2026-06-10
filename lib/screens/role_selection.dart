@@ -99,7 +99,7 @@ class _SignupState extends State<RoleSelection> {
                       child: textFormField(
                         controller: _restNameController,
                         labelText: "Restaurant Name",
-                        validadator: (value) {
+                        validator: (value) {
                           if (value == null) {
                             return "*Required field";
                           }
@@ -116,7 +116,7 @@ class _SignupState extends State<RoleSelection> {
                       child: textFormField(
                         controller: _restIdController,
                         labelText: "Restaurant Id (Enter a 6 character ID)",
-                        validadator: (value) {
+                        validator: (value) {
                           if (value == null) {
                             return "*Required field";
                           }

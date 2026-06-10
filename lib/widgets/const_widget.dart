@@ -87,7 +87,7 @@ Widget outlinedButton(VoidCallback onPressed, Widget wid) {
 Widget textFormField({
   required TextEditingController controller,
   required String labelText,
-  FormFieldValidator? validadator,
+  FormFieldValidator? validator,
   TextInputType inputType = TextInputType.text,
   bool isClearButton = true,
   bool isObscureText = false,
@@ -95,7 +95,7 @@ Widget textFormField({
   return _CustomTextFormField(
     controller: controller,
     labelText: labelText,
-    validator: validadator,
+    validator: validator,
     isClearButton: isClearButton,
     isObscureText: isObscureText,
     inputType: inputType,
@@ -149,6 +149,7 @@ class _CustomTextFormFieldState extends State<_CustomTextFormField> {
 
     return TextFormField(
       controller: widget.controller,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: _obscure,
       validator: widget.validator,
       keyboardType: widget.inputType,
@@ -183,15 +184,24 @@ class _CustomTextFormFieldState extends State<_CustomTextFormField> {
           fontWeight: FontWeight.w500,
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 1.4),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
+          borderRadius: BorderRadius.circular(7),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
           borderRadius: BorderRadius.circular(7),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primary, width: 1.5),
           borderRadius: BorderRadius.circular(7),
         ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(7),
+          borderSide: BorderSide(color: danger, width: 1.4),
+        ),
         errorStyle: TextStyle(color: danger, fontWeight: FontWeight.w500),
         errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(7),
           borderSide: BorderSide(color: danger, width: 1.4),
         ),
       ),
@@ -224,7 +234,7 @@ Widget radioListTile<T>({
 }
 
 void showDefaultLoading({String? status = "Loading"}) {
-  EasyLoading.show(status: status,);
+  EasyLoading.show(status: status);
 }
 
 void showProgressLoading({String? status = "Loading"}) {
@@ -245,4 +255,46 @@ void showInfoMessage({String status = "Loading"}) {
 
 void hideLoading() {
   EasyLoading.dismiss();
+}
+
+DropdownMenuFormField dropdownMenu<T>({
+  required List<DropdownMenuEntry<T>> dropdownMenuEntries,
+  required String label,
+  required TextEditingController controller,
+  FormFieldValidator? validator,
+}) {
+  return DropdownMenuFormField<T>(
+    validator: validator,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    controller: controller,
+    expandedInsets: EdgeInsets.all(0),
+    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(color: textSecondary, fontSize: 14),
+      // contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(7),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      errorStyle: TextStyle(color: danger, fontWeight: FontWeight.w500),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(7),
+        borderSide: BorderSide(color: danger, width: 1.4),
+      ),
+    ),
+
+    menuStyle: MenuStyle(
+      backgroundColor: WidgetStatePropertyAll(Colors.white),
+      elevation: const WidgetStatePropertyAll(8),
+      shape: WidgetStatePropertyAll(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      side: WidgetStatePropertyAll(BorderSide(color: Colors.grey.shade200)),
+    ),
+    trailingIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+    selectedTrailingIcon: const Icon(Icons.keyboard_arrow_up_rounded),
+    label: Text(label),
+    dropdownMenuEntries: dropdownMenuEntries,
+  );
 }

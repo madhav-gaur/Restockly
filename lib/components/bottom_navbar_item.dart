@@ -33,7 +33,7 @@ class BottomNavBarItem extends ConsumerWidget {
           color: isSelected ? const Color.fromARGB(255, 207, 233, 255) : null,
           border: Border.all(
             color: isSelected
-                ? const Color.fromARGB(255, 188, 224, 255)
+                ? lightPrimary
                 : Colors.transparent,
           ),
           borderRadius: BorderRadius.circular(100),
