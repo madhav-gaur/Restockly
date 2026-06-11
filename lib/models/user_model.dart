@@ -13,6 +13,7 @@ class UserModel {
   Role role;
   String restaurantName;
   String restaurantId;
+  String restaurantCode;
   UserApprovalStatus userApprovalStatus = UserApprovalStatus.pending;
 
   UserModel({
@@ -24,6 +25,7 @@ class UserModel {
     required this.role,
     required this.restaurantName,
     required this.restaurantId,
+    required this.restaurantCode,
     required this.userApprovalStatus,
   });
 
@@ -40,6 +42,7 @@ class UserModel {
           : Role.staff,
       restaurantName: json["restaurantName"] ?? "",
       restaurantId: json["restaurantId"] ?? "",
+      restaurantCode: json["restaurantCode"] ?? "",
       userApprovalStatus: json["userApprovalStatus"] != null
           ? UserApprovalStatus.values.byName(json["userApprovalStatus"])
           : UserApprovalStatus.pending,

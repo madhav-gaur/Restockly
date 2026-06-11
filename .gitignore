@@ -66,6 +66,7 @@ android/key.properties
 android/app/upload-keystore.jks
 android/app/*.jks
 android/app/*.keystore
+android/google-services.json
 
 # iOS
 ios/Pods/

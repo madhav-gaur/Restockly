@@ -46,51 +46,84 @@ class AuthService {
     return null;
   }
 
-  Future<void> addRoleToFirestore({
+  Future<bool> addRoleToFirestore({
     required Role role,
     String? restaurantName,
     String? restaurantId,
+    String? restaurantCode,
   }) async {
     showDefaultLoading(status: 'Applying role...');
     try {
       final user = FirebaseAuth.instance.currentUser;
-      final roleData = {"role": role.toString().split('.').last};
+      if (user == null) {
+        showErrorMessage(status: 'User not found');
+        return false;
+      }
+
+      final roleData = <String, dynamic>{
+        "role": role.toString().split('.').last,
+      };
 
       if (restaurantName != null) roleData["restaurantName"] = restaurantName;
-      if (restaurantId != null && restaurantId != "") {
-        roleData["restaurantId"] = restaurantId;
+      if (role == Role.staff) {
+        final code = (restaurantCode ?? restaurantId ?? "").trim().toUpperCase();
+        final restaurantSnapshot = await FirebaseFirestore.instance
+            .collection("restaurants")
+            .where("restaurantCode", isEqualTo: code)
+            .limit(1)
+            .get();
+
+        if (restaurantSnapshot.docs.isEmpty) {
+          hideLoading();
+          showErrorMessage(status: 'Restaurant code not found');
+          return false;
+        }
+
+        final restaurantDoc = restaurantSnapshot.docs.first;
+        final restaurantData = restaurantDoc.data();
+
+        roleData["restaurantId"] = restaurantDoc.id;
+        roleData["restaurantCode"] = code;
+        roleData["restaurantName"] = restaurantData["restaurantName"] ?? "";
         roleData["userApprovalStatus"] = "pending";
 
-        await FirebaseFirestore.instance.collection("joinRequest").doc().set({
-          "userId": user!.uid,
-          "restaurantId": restaurantName,
+        await FirebaseFirestore.instance.collection("joinRequests").doc().set({
+          "userId": user.uid,
+          "restaurantId": restaurantDoc.id,
+          "restaurantCode": code,
           "userApprovalStatus": "pending",
-          "requestedAt": DateTime.now(),
+          "requestedAt": FieldValue.serverTimestamp(),
         });
       }
 
-      if (restaurantId == null || restaurantId == "") {
-        final restaurantId = generateRestaurantId();
-        roleData["restaurantId"] = restaurantId;
+      if (role == Role.manager) {
+        final code = generateRestaurantId();
+        final docRef = FirebaseFirestore.instance.collection("restaurants").doc();
+
+        roleData["restaurantId"] = docRef.id;
+        roleData["restaurantCode"] = code;
         roleData["userApprovalStatus"] = "approved";
 
-        await FirebaseFirestore.instance.collection("restaurants").doc().set({
-          "restaurantId": restaurantId,
+        await docRef.set({
+          "restaurantId": docRef.id,
+          "restaurantCode": code,
           "restaurantName": restaurantName,
-          "managersId": [user!.uid],
+          "managersId": [user.uid],
         });
       }
 
       log(roleData.toString());
       await FirebaseFirestore.instance
           .collection("users")
-          .doc(user!.uid)
+          .doc(user.uid)
           .update(roleData);
       hideLoading();
+      return true;
     } catch (e) {
       hideLoading();
       showErrorMessage(status: 'Unable to save role');
       log(e.toString());
+      return false;
     }
   }
 

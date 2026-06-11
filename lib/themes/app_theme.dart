@@ -5,9 +5,10 @@ class AppTheme {
   static ThemeData lightTheme() {
     return ThemeData(
       fontFamily: 'Inter',
-      bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
+      // bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
       primaryColor: primary,
       scaffoldBackgroundColor: surface,
+      // bottomAppBarTheme: BottomAppBarThemeData(color: Colors.transparent),
       appBarTheme: AppBarTheme(
         scrolledUnderElevation: 0,
         backgroundColor: surface,

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/screens/add_inventory.dart';
+import 'package:restockly/screens/item_details.dart';
 import 'package:restockly/screens/main_screen.dart';
 import 'package:restockly/screens/onboarding.dart';
 import 'package:restockly/screens/role_selection.dart';
@@ -69,6 +70,15 @@ final GoRouter route = GoRouter(
       name: RouteConst.addInventory,
       path: "/add-inventory",
       builder: (context, state) => const AddInventory(),
+    ),
+
+    GoRoute(
+      name: RouteConst.itemDetails,
+      path: "/item-details/:itemId",
+      builder: (context, state) {
+        final itemId = state.pathParameters["itemId"];
+        return ItemDetails(itemId: itemId!);
+      },
     ),
   ],
 );

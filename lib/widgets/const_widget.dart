@@ -260,13 +260,13 @@ void hideLoading() {
 DropdownMenuFormField dropdownMenu<T>({
   required List<DropdownMenuEntry<T>> dropdownMenuEntries,
   required String label,
-  required TextEditingController controller,
+  required ValueChanged onSelected,
   FormFieldValidator? validator,
 }) {
   return DropdownMenuFormField<T>(
     validator: validator,
+    onSelected: onSelected,
     autovalidateMode: AutovalidateMode.onUserInteraction,
-    controller: controller,
     expandedInsets: EdgeInsets.all(0),
     textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
 

@@ -33,58 +33,71 @@ class _HomeState extends ConsumerState<MainScreen> {
 
     final List<Widget> pages = [Home(), Inventory(), Profile()];
     final user = ref.watch(currentUserProvider);
-    return Scaffold(
-      body: user.when(
-        data: (userData) {
-          return pages[currIdx];
-        },
-        error: (e, s) {
-          return Text(e.toString());
-        },
-        loading: () {
-          return CircularProgressIndicator();
-        },
-      ),
-      bottomSheet: Container(
-        height: 55,
-        margin: EdgeInsets.fromLTRB(16, 0, 16, 20),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 20,
-              spreadRadius: 0,
-              offset: const Offset(0, 8),
+      return Stack(
+        children: [
+          user.when(
+            data: (userData) {
+              return pages[currIdx];
+            },
+            error: (e, s) {
+              return Text(e.toString());
+            },
+            loading: () {
+              return CircularProgressIndicator();
+            },
+          ),
+          Positioned(
+            bottom: 20,
+            left: 16,
+            right: 16,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                height: 55,
+                // margin: EdgeInsets.fromLTRB(16, 0, 16, 20),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 20,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                  color: Colors.grey.shade100,
+
+                  borderRadius: BorderRadius.circular(33),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BottomNavBarItem(
+                      idx: 0,
+                      unselectedIcon: Icons.home_outlined,
+                      selectedIcon: Icons.home_filled,
+                      label: "Home",
+                    ),
+                    BottomNavBarItem(
+                      idx: 1,
+                      unselectedIcon: Icons.category_outlined,
+                      selectedIcon: Icons.category,
+                      label: "Inventory",
+                    ),
+                    BottomNavBarItem(
+                      idx: 2,
+                      unselectedIcon: Icons.settings_outlined,
+                      selectedIcon: Icons.settings,
+                      label: "Profile",
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(33),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            BottomNavBarItem(
-              idx: 0,
-              unselectedIcon: Icons.home_outlined,
-              selectedIcon: Icons.home_filled,
-              label: "Home",
-            ),
-            BottomNavBarItem(
-              idx: 1,
-              unselectedIcon: Icons.category_outlined,
-              selectedIcon: Icons.category,
-              label: "Inventory",
-            ),
-            BottomNavBarItem(
-              idx: 2,
-              unselectedIcon: Icons.settings_outlined,
-              selectedIcon: Icons.settings,
-              label: "Profile",
-            ),
-          ],
-        ),
-      ),
+          ),
+        ],
+    //   ),
     );
   }
 }

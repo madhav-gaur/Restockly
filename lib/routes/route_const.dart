@@ -6,6 +6,7 @@ class RouteConst {
   static String mainScreen = '/';
   static String inventory = '/inventory';
   static String addInventory = '/add-inventory';
+  static String itemDetails = '/item-details/:itemId';
 
   // static String verifyEmail = '/verify-email';
 }

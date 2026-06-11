@@ -15,33 +15,38 @@ class RoleSelection extends StatefulWidget {
 
 class _SignupState extends State<RoleSelection> {
   late TextEditingController _restNameController;
-  late TextEditingController _restIdController;
+  late TextEditingController _restCodeController;
 
   @override
   void initState() {
     super.initState();
     _restNameController = TextEditingController();
-    _restIdController = TextEditingController();
+    _restCodeController = TextEditingController();
   }
 
   @override
   void dispose() {
     _restNameController.dispose();
-    _restIdController.dispose();
+    _restCodeController.dispose();
     super.dispose();
   }
 
   Role? selectedRole = Role.manager;
   final _formKey = GlobalKey<FormState>();
-  void _addRole() {
-    if (selectedRole != null) {
-      AuthService().addRoleToFirestore(
-        role: selectedRole!,
-        restaurantId: _restIdController.text,
-        restaurantName: _restNameController.text,
-      );
+  Future<void> _addRole() async {
+    if (!_formKey.currentState!.validate() || selectedRole == null) {
+      return;
     }
-    context.goNamed(RouteConst.mainScreen);
+
+    final isSaved = await AuthService().addRoleToFirestore(
+        role: selectedRole!,
+      restaurantCode: _restCodeController.text.trim(),
+      restaurantName: _restNameController.text.trim(),
+    );
+
+    if (isSaved && mounted) {
+      context.goNamed(RouteConst.mainScreen);
+    }
   }
 
   @override
@@ -100,7 +105,7 @@ class _SignupState extends State<RoleSelection> {
                         controller: _restNameController,
                         labelText: "Restaurant Name",
                         validator: (value) {
-                          if (value == null) {
+                          if (value == null || value.trim().isEmpty) {
                             return "*Required field";
                           }
                           return null;
@@ -114,14 +119,15 @@ class _SignupState extends State<RoleSelection> {
                   children: [
                     Container(
                       child: textFormField(
-                        controller: _restIdController,
-                        labelText: "Restaurant Id (Enter a 6 character ID)",
+                        controller: _restCodeController,
+                        labelText: "Restaurant Code (Enter a 6 character code)",
                         validator: (value) {
-                          if (value == null) {
+                          final code = value?.trim() ?? "";
+                          if (code.isEmpty) {
                             return "*Required field";
                           }
-                          if (value.length != 6) {
-                            return "Invalid Id";
+                          if (code.length != 6) {
+                            return "Invalid code";
                           }
                           return null;
                         },
