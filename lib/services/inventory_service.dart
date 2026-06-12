@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:restockly/constants.dart';
 
 class InventoryService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -17,9 +18,9 @@ class InventoryService {
     }
 
     final docRef = firestore
-        .collection("restaurants")
+        .collection(restaurantCol)
         .doc(restaurantId.trim())
-        .collection("inventory")
+        .collection(inventoryCol)
         .doc();
     final item = await docRef.set({
       "itemId": docRef.id,
@@ -38,21 +39,22 @@ class InventoryService {
   Future<void> updateItemQnt({
     required String restaurantId,
     required String itemId,
+    required String itemName,
     required String userId,
     required double oldQnt,
     required double newQnt,
     String? note = "",
   }) async {
     final itemRef = firestore
-        .collection("restaurants")
+        .collection(restaurantCol)
         .doc(restaurantId.trim())
-        .collection("inventory")
+        .collection(inventoryCol)
         .doc(itemId);
 
     final transactionRef = firestore
-        .collection("restaurants")
+        .collection(restaurantCol)
         .doc(restaurantId.trim())
-        .collection("transactions")
+        .collection(transactionCol)
         .doc();
 
     final batch = firestore.batch();
@@ -60,6 +62,7 @@ class InventoryService {
     batch.set(transactionRef, {
       "transactionId": transactionRef.id,
       "itemId": itemId,
+      "itemName": itemName,
       "oldQuantity": oldQnt,
       "newQuantity": newQnt,
       "transactionType": newQnt > oldQnt ? "stockIn" : "stockOut",

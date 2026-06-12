@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
+// Firestore Collections
+const String restaurantCol = "restaurants";
+const String userCol = "users";
+const String inventoryCol = "inventory";
+const String transactionCol = "transactions";
+
 const String onboardingImage = "assets/images/onboarding_page.png";
 const String googleLogo = "assets/images/google.png";
+
+
 
 EdgeInsets defaultPagePadding({double vertical = 8, double horiz = 16}) {
   return EdgeInsets.symmetric(vertical: vertical, horizontal: horiz);

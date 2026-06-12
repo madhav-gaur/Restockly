@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:restockly/constants.dart';
 import 'package:restockly/models/user_model.dart';
 import 'package:restockly/utils/generate_restaurant_id.dart';
 import 'package:restockly/widgets/const_widget.dart';
@@ -23,7 +24,7 @@ class AuthService {
       );
       log(user.toString());
       await FirebaseFirestore.instance
-          .collection("users")
+          .collection(userCol)
           .doc(user.user!.uid)
           .set({
             "uid": user.user!.uid,
@@ -66,9 +67,11 @@ class AuthService {
 
       if (restaurantName != null) roleData["restaurantName"] = restaurantName;
       if (role == Role.staff) {
-        final code = (restaurantCode ?? restaurantId ?? "").trim().toUpperCase();
+        final code = (restaurantCode ?? restaurantId ?? "")
+            .trim()
+            .toUpperCase();
         final restaurantSnapshot = await FirebaseFirestore.instance
-            .collection("restaurants")
+            .collection(restaurantCol)
             .where("restaurantCode", isEqualTo: code)
             .limit(1)
             .get();
@@ -98,7 +101,9 @@ class AuthService {
 
       if (role == Role.manager) {
         final code = generateRestaurantId();
-        final docRef = FirebaseFirestore.instance.collection("restaurants").doc();
+        final docRef = FirebaseFirestore.instance
+            .collection(restaurantCol)
+            .doc();
 
         roleData["restaurantId"] = docRef.id;
         roleData["restaurantCode"] = code;
@@ -114,7 +119,7 @@ class AuthService {
 
       log(roleData.toString());
       await FirebaseFirestore.instance
-          .collection("users")
+          .collection(userCol)
           .doc(user.uid)
           .update(roleData);
       hideLoading();
@@ -188,7 +193,7 @@ class AuthService {
 
       if (!doc.exists) {
         await FirebaseFirestore.instance
-            .collection("users")
+            .collection(userCol)
             .doc(firebaseUser.uid)
             .set({
               "uid": firebaseUser.uid,

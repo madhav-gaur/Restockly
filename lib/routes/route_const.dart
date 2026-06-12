@@ -7,6 +7,7 @@ class RouteConst {
   static String inventory = '/inventory';
   static String addInventory = '/add-inventory';
   static String itemDetails = '/item-details/:itemId';
+  static String stockTransactionDetails = '/stock-transaction-details';
 
   // static String verifyEmail = '/verify-email';
 }

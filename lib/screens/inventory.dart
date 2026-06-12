@@ -198,7 +198,9 @@ class _InventoryState extends ConsumerState<Inventory> {
                                           horizontal: 15,
                                         ),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(13),
+                                          borderRadius: BorderRadius.circular(
+                                            13,
+                                          ),
                                           border: Border.all(
                                             color: Colors.grey.shade400,
                                           ),
@@ -213,10 +215,12 @@ class _InventoryState extends ConsumerState<Inventory> {
                                               children: [
                                                 Text(
                                                   currItem.name,
-                                                  style: boldTextStyle().copyWith(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
+                                                  style: boldTextStyle()
+                                                      .copyWith(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
                                                 ),
                                                 Text(
                                                   "Quantity: $quantity ${currItem.unit.name}",
@@ -261,7 +265,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                           onTap: () {
                                                             setState(() {
                                                               _selectedNoteItemId =
-                                                                  currItem.itemId;
+                                                                  currItem
+                                                                      .itemId;
                                                               _setQuantity(
                                                                 currItem.itemId,
                                                                 quantity - 1,
@@ -276,7 +281,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                           child: Container(
                                                             padding:
                                                                 EdgeInsets.symmetric(
-                                                                  horizontal: 15,
+                                                                  horizontal:
+                                                                      15,
                                                                   vertical: 3,
                                                                 ),
                                                             child: Text(
@@ -285,7 +291,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                                   .copyWith(
                                                                     color:
                                                                         whiteText,
-                                                                    fontSize: 25,
+                                                                    fontSize:
+                                                                        25,
                                                                   ),
                                                             ),
                                                           ),
@@ -305,8 +312,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                                 const TextInputType.numberWithOptions(
                                                                   decimal: true,
                                                                 ),
-                                                            textAlign:
-                                                                TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: boldTextStyle()
                                                                 .copyWith(
                                                                   color:
@@ -339,9 +346,10 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                                   double.tryParse(
                                                                     value,
                                                                   );
-                                                              if (parsed == null)
+                                                              if (parsed ==
+                                                                  null)
                                                                 return;
-                                      
+
                                                               setState(() {
                                                                 _selectedNoteItemId =
                                                                     currItem
@@ -372,7 +380,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                           onTap: () {
                                                             setState(() {
                                                               _selectedNoteItemId =
-                                                                  currItem.itemId;
+                                                                  currItem
+                                                                      .itemId;
                                                               _setQuantity(
                                                                 currItem.itemId,
                                                                 quantity + 1,
@@ -382,7 +391,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                           child: Container(
                                                             padding:
                                                                 EdgeInsets.symmetric(
-                                                                  horizontal: 15,
+                                                                  horizontal:
+                                                                      15,
                                                                   vertical: 3,
                                                                 ),
                                                             child: Text(
@@ -391,7 +401,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                                   .copyWith(
                                                                     color:
                                                                         whiteText,
-                                                                    fontSize: 25,
+                                                                    fontSize:
+                                                                        25,
                                                                   ),
                                                             ),
                                                           ),
@@ -435,7 +446,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                             () {
                                                               setState(() {
                                                                 _clearEditedItem(
-                                                                  currItem.itemId,
+                                                                  currItem
+                                                                      .itemId,
                                                                 );
                                                               });
                                                             },
@@ -452,23 +464,23 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                         width: 120,
                                                         child: Container(
                                                           child: elevatedButton(() async {
-                                                            await InventoryService()
-                                                                .updateItemQnt(
-                                                                  restaurantId: user!
-                                                                      .restaurantId,
-                                                                  itemId: currItem
-                                                                      .itemId,
-                                                                  userId:
-                                                                      user.uid,
-                                                                  oldQnt: currItem
-                                                                      .quantity,
-                                                                  newQnt:
-                                                                      quantity,
-                                                                  note: _noteControllerFor(
+                                                            await InventoryService().updateItemQnt(
+                                                              restaurantId: user!
+                                                                  .restaurantId,
+                                                              itemId: currItem
+                                                                  .itemId,
+                                                              itemName: currItem
+                                                                  .name,
+                                                              userId: user.uid,
+                                                              oldQnt: currItem
+                                                                  .quantity,
+                                                              newQnt: quantity,
+                                                              note:
+                                                                  _noteControllerFor(
                                                                     currItem
                                                                         .itemId,
                                                                   ).text,
-                                                                );
+                                                            );
                                                             ref.invalidate(
                                                               inventoryProvider,
                                                             );
