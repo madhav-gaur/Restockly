@@ -9,6 +9,7 @@ import 'package:restockly/screens/onboarding.dart';
 import 'package:restockly/screens/role_selection.dart';
 import 'package:restockly/screens/signin.dart';
 import 'package:restockly/screens/signup.dart';
+import 'package:restockly/screens/stock_transaction_details.dart';
 
 final GoRouter route = GoRouter(
   redirect: (context, state) async {
@@ -80,5 +81,13 @@ final GoRouter route = GoRouter(
         return InventoryItemDetails(itemId: itemId!);
       },
     ),
+    GoRoute(
+      name: RouteConst.stockTransactionDetails,
+      path: "/stock-transaction-details/:itemId",
+      builder: (context, state) {
+        final itemId = state.pathParameters["itemId"];
+        return StockTransactionDetails(itemId: itemId!);
+      },
+    )
   ],
 );

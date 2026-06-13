@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restockly/constants.dart';
-import 'package:restockly/models/user_model.dart';
 import 'package:restockly/providers/inventory_provider.dart';
 import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/routes/route_const.dart';
@@ -542,6 +541,7 @@ class _InventoryState extends ConsumerState<Inventory> {
                       if (filteredItems.isEmpty) {
                         return Text("No items");
                       }
+                      return null;
                     },
                   ),
                 );

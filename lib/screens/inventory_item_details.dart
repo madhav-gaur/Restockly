@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +10,7 @@ import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/themes/color_const.dart';
 import 'package:restockly/widgets/const_widget.dart';
+import 'package:restockly/widgets/skeletons.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class InventoryItemDetails extends ConsumerStatefulWidget {
@@ -26,33 +25,6 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Widget _transactionSkeletonTile() {
-    return Skeletonizer(
-      enabled: true,
-      child: ListTile(
-        visualDensity: const VisualDensity(horizontal: -1, vertical: -4),
-        isThreeLine: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-        leading:  CircleAvatar(radius: 17, backgroundColor: Colors.grey.shade200,),
-        title: Text(
-          "Added 12 kg onions",
-          style: mediumTextStyle(),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("By Restaurant Member on"),
-            Text(
-              "12 Jan, 10:30 AM",
-              style: smallTextStyle().copyWith(fontSize: 12),
-            ),
-          ],
-        ),
-        trailing: const Text("10 kg -> 22 kg"),
-      ),
-    );
   }
 
   @override
@@ -168,9 +140,15 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
                               padding: const EdgeInsets.all(8),
                               child: outlinedButton(
                                 () {
-                                  context.pushNamed(RouteConst.stockTransactionDetails);
+                                  context.pushNamed(
+                                    RouteConst.stockTransactionDetails,
+                                    pathParameters: {"itemId": item.itemId},
+                                  );
                                 },
-                                Text("See All Transactions", style: mediumTextStyle()),
+                                Text(
+                                  "See All Transactions",
+                                  style: mediumTextStyle(),
+                                ),
                               ),
                             );
                           }
@@ -186,18 +164,10 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
                           return restaurentMember.when(
                             data: (membersData) {
                               return ListTile(
-                                visualDensity: const VisualDensity(
-                                  horizontal: -1,
-                                  vertical: -4,
-                                ),
-                                // dense: true,
-                                isThreeLine: true,
                                 contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 7,
+                                  horizontal: 8,
                                 ),
-                                tileColor: transactionType == "IN"
-                                    ? success.withAlpha(15)
-                                    : danger.withAlpha(15),
+                                tileColor: background,
                                 leading: CircleAvatar(
                                   radius: 17,
                                   backgroundColor: transactionType == "IN"
@@ -211,20 +181,43 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
                                     size: 25,
                                   ),
                                 ),
-                                title: Text(
-                                  "${transactionType == "IN" ? "Added" : "Used"} ${(currLog.newQuantity - currLog.oldQuantity).abs()} $unit ${currLog.itemName}",
-                                  style: mediumTextStyle(),
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "${transactionType == "IN" ? "Added" : "Used"} ${(currLog.newQuantity - currLog.oldQuantity).abs()} $unit ${currLog.itemName}",
+                                        style: mediumTextStyle(),
+                                      ),
+                                    ),
+                                    Text(
+                                      "${currLog.oldQuantity} $unit -> ${currLog.newQuantity} $unit",
+                                      style: smallTextStyle().copyWith(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: transactionType == "IN"
+                                            ? green
+                                            : danger,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 subtitle: SizedBox(
-                                  width: 30,
+                                  width: 50,
                                   child: Column(
                                     crossAxisAlignment: .start,
                                     children: [
-                                      Text("By ${membersData!.name} on"),
+                                      if (currLog.note != "")
+                                        Text(
+                                          "Note: ${currLog.note}",
+                                          style: mediumTextStyle().copyWith(
+                                            color: textSecondary,
+                                          ),
+                                        ),
                                       Text(
-                                        DateFormat(
-                                          "d MMM, h:mm a",
-                                        ).format(currLog.createdAt),
+                                        "By ${membersData!.name} on ${DateFormat("d MMM, h:mm a").format(currLog.createdAt)}",
                                         style: smallTextStyle().copyWith(
                                           fontSize: 12,
                                         ),
@@ -232,13 +225,11 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
                                     ],
                                   ),
                                 ),
-                                trailing: Text(
-                                  "${currLog.oldQuantity} $unit -> ${currLog.newQuantity} $unit",
-                                ),
+                                // trailing:
                               );
                             },
                             error: (e, s) => Text(e.toString()),
-                            loading: _transactionSkeletonTile,
+                            loading: transactionSkeletonTile,
                           );
                         },
                       );
@@ -257,7 +248,7 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
                           color: Colors.grey.shade300,
                         ),
                         itemBuilder: (context, index) =>
-                            _transactionSkeletonTile(),
+                            transactionSkeletonTile(),
                       ),
                     ),
                   ),

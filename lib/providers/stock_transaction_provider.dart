@@ -9,6 +9,7 @@ final stockTransactionProvider = FutureProvider<List<StockTransactionModel?>>((
   ref,
 ) async {
   final user = await ref.watch(currentUserProvider.future);
+  // await Future.delayed(const Duration(minutes: 30));
 
   if (user == null) {
     return [];
