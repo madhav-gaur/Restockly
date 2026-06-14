@@ -88,6 +88,6 @@ final GoRouter route = GoRouter(
         final itemId = state.pathParameters["itemId"];
         return StockTransactionDetails(itemId: itemId!);
       },
-    )
+    ),
   ],
 );

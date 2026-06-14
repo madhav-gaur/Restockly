@@ -1,16 +1,13 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:restockly/constants.dart';
 import 'package:restockly/models/inventory_model.dart';
 
 class InventoryRepo {
   Future<List<InventoryModel?>> getAllItems(String restaurantId) async {
-    log(restaurantId);
     final snapshot = await FirebaseFirestore.instance
         .collection(restaurantCol)
         .doc(restaurantId)
-        .collection(inventoryCol)
+        .collection(inventoryCol).where('isDeleted', isEqualTo: false)
         .get();
     return snapshot.docs
         .map((doc) => InventoryModel.fromMap(doc.data()))

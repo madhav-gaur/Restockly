@@ -65,7 +65,7 @@ Widget elevatedButton(VoidCallback onPressed, String text) {
   );
 }
 
-Widget outlinedButton(VoidCallback onPressed, Widget wid) {
+Widget outlinedButton(VoidCallback onPressed, Widget widget) {
   return SizedBox(
     width: double.infinity,
     child: OutlinedButton(
@@ -79,7 +79,7 @@ Widget outlinedButton(VoidCallback onPressed, Widget wid) {
         side: WidgetStatePropertyAll(BorderSide(color: primary, width: 1.7)),
         minimumSize: WidgetStatePropertyAll(Size.fromHeight(42)),
       ),
-      child: wid,
+      child: widget,
     ),
   );
 }
@@ -111,14 +111,13 @@ class _CustomTextFormField extends StatefulWidget {
   final TextInputType inputType;
 
   const _CustomTextFormField({
-    Key? key,
     required this.controller,
     required this.labelText,
     this.validator,
     this.isClearButton = true,
     this.isObscureText = false,
     this.inputType = TextInputType.text,
-  }) : super(key: key);
+  });
 
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
@@ -260,10 +259,12 @@ void hideLoading() {
 DropdownMenuFormField dropdownMenu<T>({
   required List<DropdownMenuEntry<T>> dropdownMenuEntries,
   required String label,
-  required ValueChanged onSelected,
+  required ValueChanged<T?> onSelected,
+  T? initialSelection,
   FormFieldValidator? validator,
 }) {
   return DropdownMenuFormField<T>(
+    initialSelection: initialSelection,
     validator: validator,
     onSelected: onSelected,
     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -296,5 +297,35 @@ DropdownMenuFormField dropdownMenu<T>({
     selectedTrailingIcon: const Icon(Icons.keyboard_arrow_up_rounded),
     label: Text(label),
     dropdownMenuEntries: dropdownMenuEntries,
+  );
+}
+
+Widget alertDialog({
+  required String title,
+  String? description = "",
+  required VoidCallback cancel,
+  required VoidCallback confirm,
+  String? confirmText = "Confirm",
+}) {
+  return AlertDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+    backgroundColor: background,
+    title: Text(title, style: boldTextStyle().copyWith(fontSize: 24)),
+    content: Text(description!, style: smallTextStyle()),
+    actionsAlignment: MainAxisAlignment.spaceAround,
+    actions: [
+      Row(
+        children: [
+          Expanded(
+            child: outlinedButton(
+              cancel,
+              Text("Cancel", style: mediumTextStyle()),
+            ),
+          ),
+          SizedBox(width: 5),
+          Expanded(child: elevatedButton(confirm, confirmText!)),
+        ],
+      ),
+    ],
   );
 }

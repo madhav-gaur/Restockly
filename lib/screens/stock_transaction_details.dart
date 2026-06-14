@@ -156,20 +156,16 @@ class _ItemDetailsState extends ConsumerState<StockTransactionDetails> {
                   );
                 },
                 error: (e, s) => Text(e.toString()),
-                loading: () => Skeletonizer(
-                  containersColor: Colors.grey.shade300,
-                  enabled: true,
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    separatorBuilder: (context, index) => Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: Colors.grey.shade300,
-                    ),
-                    itemBuilder: (context, index) => transactionSkeletonTile(),
+                loading: () => ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 3,
+                  separatorBuilder: (context, index) => Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Colors.grey.shade300,
                   ),
+                  itemBuilder: (context, index) => transactionSkeletonTile(),
                 ),
               ),
             ],

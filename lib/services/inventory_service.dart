@@ -73,4 +73,41 @@ class InventoryService {
 
     await batch.commit();
   }
+
+  Future<void> updateInventoryItem({
+    required String restaurantId,
+    required String itemId,
+    required String name,
+    required String category,
+    required String unit,
+    required double quantity,
+    required double minQuantity,
+    String? imageUrl = "",
+  }) async {
+    await firestore
+        .collection(restaurantCol)
+        .doc(restaurantId.trim())
+        .collection(inventoryCol)
+        .doc(itemId)
+        .update({
+          "name": name,
+          "category": category,
+          "unit": unit,
+          "imageUrl": imageUrl,
+          "quantity": quantity,
+          "minQuantity": minQuantity,
+        });
+  }
+
+  Future<void> deleteInventoryItem({
+    required String restaurantId,
+    required String itemId,
+  }) async {
+    await firestore
+        .collection(restaurantCol)
+        .doc(restaurantId.trim())
+        .collection(inventoryCol)
+        .doc(itemId)
+        .update({"isDeleted": true});
+  }
 }

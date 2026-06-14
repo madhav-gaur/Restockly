@@ -10,6 +10,8 @@ import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/services/inventory_service.dart';
 import 'package:restockly/themes/color_const.dart';
 import 'package:restockly/widgets/const_widget.dart';
+import 'package:restockly/widgets/skeletons.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Inventory extends ConsumerStatefulWidget {
   const Inventory({super.key});
@@ -170,7 +172,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                         currItem.itemId,
                         quantity,
                       );
-
+                      final isLowStock =
+                          currItem.quantity < currItem.minQuantity;
                       if (filteredItems.isNotEmpty) {
                         return user.when(
                           data: (user) {
@@ -201,7 +204,9 @@ class _InventoryState extends ConsumerState<Inventory> {
                                             13,
                                           ),
                                           border: Border.all(
-                                            color: Colors.grey.shade400,
+                                            color: isLowStock
+                                                ? danger
+                                                : Colors.grey.shade400,
                                           ),
                                         ),
                                         child: Row(
@@ -212,21 +217,40 @@ class _InventoryState extends ConsumerState<Inventory> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  currItem.name,
-                                                  style: boldTextStyle()
-                                                      .copyWith(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                if (isLowStock)
+                                                  SizedBox(height: 25),
+                                                Row(
+                                                  children: [
+                                                    if (isLowStock)
+                                                      Icon(
+                                                        Icons
+                                                            .warning_amber_outlined,
+                                                        color: warning,
                                                       ),
+                                                    if (isLowStock)
+                                                      SizedBox(width: 8),
+                                                    Text(
+                                                      currItem.name,
+                                                      style: boldTextStyle()
+                                                          .copyWith(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                    ),
+                                                  ],
                                                 ),
                                                 Text(
-                                                  "Quantity: $quantity ${currItem.unit.name}",
+                                                  "Quantity: ${currItem.quantity} ${currItem.unit.name}",
                                                   style: smallTextStyle()
                                                       .copyWith(
-                                                        color: textSecondary,
+                                                        color: isLowStock
+                                                            ? danger
+                                                            : textSecondary,
                                                         fontSize: 15,
+                                                        fontWeight: isLowStock
+                                                            ? FontWeight.w600
+                                                            : FontWeight.w400,
                                                       ),
                                                 ),
                                                 Text(
@@ -346,8 +370,9 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                                     value,
                                                                   );
                                                               if (parsed ==
-                                                                  null)
+                                                                  null) {
                                                                 return;
+                                                              }
 
                                                               setState(() {
                                                                 _selectedNoteItemId =
@@ -468,8 +493,8 @@ class _InventoryState extends ConsumerState<Inventory> {
                                                                   .restaurantId,
                                                               itemId: currItem
                                                                   .itemId,
-                                                              itemName: currItem
-                                                                  .name,
+                                                              itemName:
+                                                                  currItem.name,
                                                               userId: user.uid,
                                                               oldQnt: currItem
                                                                   .quantity,
@@ -527,14 +552,38 @@ class _InventoryState extends ConsumerState<Inventory> {
                                   ),
                                   // ),]
                                 ),
+                                if (isLowStock)
+                                  Positioned(
+                                    left: 0,
+                                    top: 20,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: danger,
+                                        borderRadius: BorderRadius.horizontal(
+                                          right: Radius.circular(7),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Stock Alert",
+                                        style: TextStyle(
+                                          color: whiteText,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                    // ),]
+                                  ),
                               ],
                             );
                           },
                           error: (e, s) {
                             return Text(e.toString());
                           },
-                          loading: () =>
-                              Center(child: CircularProgressIndicator()),
+                          loading: () => inventoryItemSkeleton(),
                         );
                       }
 
@@ -549,9 +598,12 @@ class _InventoryState extends ConsumerState<Inventory> {
               error: (e, c) {
                 return Text(e.toString());
               },
-              loading: () {
-                return Center(child: CircularProgressIndicator());
-              },
+              loading: () => Expanded(
+                child: ListView.builder(
+                  itemCount: 3,
+                  itemBuilder: (context, index) => inventoryItemSkeleton(),
+                ),
+              ),
             ),
           ],
         ),

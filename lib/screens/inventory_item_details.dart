@@ -4,10 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:restockly/constants.dart';
 import 'package:restockly/models/stock_transaction_model.dart';
+import 'package:restockly/models/user_model.dart';
 import 'package:restockly/providers/inventory_provider.dart';
 import 'package:restockly/providers/stock_transaction_provider.dart';
 import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/routes/route_const.dart';
+import 'package:restockly/screens/update_intventory_item.dart';
+import 'package:restockly/services/inventory_service.dart';
 import 'package:restockly/themes/color_const.dart';
 import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
@@ -43,6 +46,9 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
         }
         final item = itemData;
         return Scaffold(
+          // bottomSheet: BottomSheet(
+          //   onClosing: () {},
+          // ),
           appBar: AppBar(
             actions: [
               PopupMenuButton(
@@ -52,8 +58,60 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
                 elevation: 2,
                 itemBuilder: (context) {
                   return [
-                    PopupMenuItem(child: Text("Edit")),
-                    PopupMenuItem(child: Text("Delete")),
+                    PopupMenuItem(
+                      child: Text("Update"),
+                      onTap: () {
+                        final userSync = ref.watch(currentUserProvider);
+                        userSync.whenData((user) {
+                          if (user != null && user.role == Role.manager) {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: surface,
+                              useSafeArea: true,
+                              context: context,
+                              showDragHandle: true,
+                              builder: (context) =>
+                                  UpdateIntventoryItem(itemId: itemId),
+                            );
+                          } else {
+                            showInfoMessage(status: "Access Denied");
+                          }
+                        });
+                      },
+                    ),
+                    PopupMenuItem(
+                      child: Text("Delete"),
+                      onTap: () {
+                        final userSync = ref.watch(currentUserProvider);
+                        userSync.whenData((user) {
+                          if (user != null && user.role == Role.manager) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return alertDialog(
+                                  title: "Delete",
+                                  cancel: () => context.pop(),
+                                  description:
+                                      "Are you sure you want to delete this item.\nThis action is undoable.",
+                                  confirmText: "Delete",
+                                  confirm: () {
+                                    InventoryService().deleteInventoryItem(
+                                      restaurantId: user.restaurantId,
+                                      itemId: itemId,
+                                    );
+                                    ref.invalidate(inventoryProvider);
+                                    context.pop();
+                                    context.goNamed("/");
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            showInfoMessage(status: "Access Denied");
+                          }
+                        });
+                      },
+                    ),
                   ];
                 },
               ),
@@ -64,7 +122,12 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
               children: [
                 Text(item.name),
                 SizedBox(width: 5),
-                Text("(${item.category.name})", style: smallTextStyle()),
+                Expanded(
+                  child: Text(
+                    "(${item.category.name})",
+                    style: smallTextStyle(),
+                  ),
+                ),
               ],
             ),
           ),

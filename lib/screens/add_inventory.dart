@@ -131,7 +131,7 @@ class _AddInventoryState extends ConsumerState<AddInventory> {
                     label: "Select Category",
                     onSelected: (value) {
                       setState(() {
-                        selectedCategory = value;
+                        selectedCategory = value!;
                       });
                     },
                     validator: (value) {
@@ -162,7 +162,7 @@ class _AddInventoryState extends ConsumerState<AddInventory> {
                     label: "Select Item Unit",
                     onSelected: (value) {
                       setState(() {
-                        selectedUnit = value;
+                        selectedUnit = value!;
                       });
                     },
                     validator: (value) {
