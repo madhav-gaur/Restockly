@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -46,7 +44,7 @@ class _HomeState extends ConsumerState<MainScreen> {
             return Text(e.toString());
           },
           loading: () {
-            return CircularProgressIndicator();
+            return Text("");
           },
         ),
         Positioned(

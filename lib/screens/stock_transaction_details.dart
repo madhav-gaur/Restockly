@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:restockly/components/transaction_list_tile.dart';
 import 'package:restockly/models/stock_transaction_model.dart';
 import 'package:restockly/providers/inventory_provider.dart';
 import 'package:restockly/providers/stock_transaction_provider.dart';
@@ -58,22 +59,6 @@ class _ItemDetailsState extends ConsumerState<StockTransactionDetails> {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: itemLogs.length,
                     itemBuilder: (context, index) {
-                      // if (itemLogs.length > 5 && index == 5) {
-                      //   return Padding(
-                      //     padding: const EdgeInsets.all(8),
-                      //     child: outlinedButton(
-                      //       () {
-                      //         context.pushNamed(
-                      //           RouteConst.stockTransactionDetails,
-                      //         );
-                      //       },
-                      //       Text(
-                      //         "See All Transactions",
-                      //         style: mediumTextStyle(),
-                      //       ),
-                      //     ),
-                      //   );
-                      // }
                       final currLog = itemLogs[index]!;
                       final restaurentMember = ref.watch(
                         anyUserProvider(currLog.createdBy),
@@ -85,68 +70,11 @@ class _ItemDetailsState extends ConsumerState<StockTransactionDetails> {
                       final unit = item.unit.name;
                       return restaurentMember.when(
                         data: (membersData) {
-                          return ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                            ),
-                            tileColor: background,
-                            leading: CircleAvatar(
-                              radius: 17,
-                              backgroundColor: transactionType == "IN"
-                                  ? green
-                                  : danger,
-                              child: Icon(
-                                transactionType == "IN"
-                                    ? Icons.add
-                                    : Icons.remove,
-                                color: whiteText,
-                                size: 25,
-                              ),
-                            ),
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "${transactionType == "IN" ? "Added" : "Used"} ${(currLog.newQuantity - currLog.oldQuantity).abs()} $unit ${currLog.itemName}",
-                                    style: mediumTextStyle(),
-                                  ),
-                                ),
-                                Text(
-                                  "${currLog.oldQuantity} $unit -> ${currLog.newQuantity} $unit",
-                                  style: smallTextStyle().copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: transactionType == "IN"
-                                        ? green
-                                        : danger,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            subtitle: SizedBox(
-                              width: 50,
-                              child: Column(
-                                crossAxisAlignment: .start,
-                                children: [
-                                  if (currLog.note != "")
-                                    Text(
-                                      "Note: ${currLog.note}",
-                                      style: mediumTextStyle().copyWith(
-                                        color: textSecondary,
-                                      ),
-                                    ),
-                                  Text(
-                                    "By ${membersData!.name} on ${DateFormat("d MMM, h:mm a").format(currLog.createdAt)}",
-                                    style: smallTextStyle().copyWith(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // trailing:
+                          return transactionListTile(
+                            transactionType: transactionType,
+                            currLog: currLog,
+                            unit: unit,
+                            membersData: membersData!,
                           );
                         },
                         error: (e, s) => Text(e.toString()),

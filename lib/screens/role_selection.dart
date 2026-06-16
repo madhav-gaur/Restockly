@@ -6,7 +6,6 @@ import 'package:restockly/models/user_model.dart';
 import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/services/auth_service.dart';
-import 'package:restockly/themes/color_const.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
 class RoleSelection extends ConsumerStatefulWidget {

@@ -165,7 +165,7 @@ class _InventoryState extends ConsumerState<Inventory> {
                     color: primary,
                     onRefresh: () async {
                       log("message");
-                      await ref.refresh(inventoryProvider.future);
+                      ref.invalidate(inventoryProvider);
                     },
                     child: ListView.builder(
                       padding: EdgeInsets.only(bottom: 100),

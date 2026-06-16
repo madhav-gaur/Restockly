@@ -6,7 +6,6 @@ import 'package:restockly/providers/join_request_provider.dart';
 import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/services/auth_service.dart';
-import 'package:restockly/services/join_request_service.dart';
 import 'package:intl/intl.dart';
 import 'package:restockly/themes/color_const.dart';
 
