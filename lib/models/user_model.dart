@@ -20,7 +20,7 @@ class UserModel {
     required this.uid,
     required this.name,
     required this.email,
-    this.photoUrl,
+    this.photoUrl = "",
     required this.accountProvider,
     required this.role,
     required this.restaurantName,
@@ -34,6 +34,7 @@ class UserModel {
       uid: json["uid"],
       name: json["name"] ?? "",
       email: json["email"] ?? "",
+      photoUrl: json["photoUrl"] ?? "",
       accountProvider: json["accountProvider"] != null
           ? AccountProvider.values.byName(json["accountProvider"])
           : AccountProvider.email,

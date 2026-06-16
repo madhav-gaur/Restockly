@@ -8,6 +8,9 @@ class RouteConst {
   static String addInventory = '/add-inventory';
   static String itemDetails = '/item-details/:itemId';
   static String stockTransactionDetails = '/stock-transaction-details/:itemId';
+  static String joinRequest = '/join-request';
+  static String requestPending = '/request-pending';
+  static String requestRejected = '/request-rejected';
 
   // static String verifyEmail = '/verify-email';
 }

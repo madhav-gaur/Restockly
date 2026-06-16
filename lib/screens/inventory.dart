@@ -160,438 +160,455 @@ class _InventoryState extends ConsumerState<Inventory> {
                 }
 
                 return Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.only(bottom: 100),
-                    itemCount: filteredItems.length,
-                    itemBuilder: (context, index) {
-                      final currItem = filteredItems[index]!;
-                      final unit = currItem.unit.name;
-                      final quantity =
-                          _quantities[currItem.itemId] ?? currItem.quantity;
-                      final quantityController = _quantityControllerFor(
-                        currItem.itemId,
-                        quantity,
-                      );
-                      final isLowStock =
-                          currItem.quantity < currItem.minQuantity;
-                      if (filteredItems.isNotEmpty) {
-                        return user.when(
-                          data: (user) {
-                            return Stack(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 7),
-                                  child: Material(
-                                    color: background,
-                                    clipBehavior: Clip.antiAlias,
-                                    borderRadius: BorderRadius.circular(13),
-                                    child: InkWell(
+                  child: RefreshIndicator(
+                    backgroundColor: surface,
+                    color: primary,
+                    onRefresh: () async {
+                      log("message");
+                      await ref.refresh(inventoryProvider.future);
+                    },
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(bottom: 100),
+                      itemCount: filteredItems.length,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final currItem = filteredItems[index]!;
+                        final unit = currItem.unit.name;
+                        final quantity =
+                            _quantities[currItem.itemId] ?? currItem.quantity;
+                        final quantityController = _quantityControllerFor(
+                          currItem.itemId,
+                          quantity,
+                        );
+                        final isLowStock =
+                            currItem.quantity < currItem.minQuantity;
+                        if (filteredItems.isNotEmpty) {
+                          return user.when(
+                            data: (user) {
+                              return Stack(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 7),
+                                    child: Material(
+                                      color: background,
+                                      clipBehavior: Clip.antiAlias,
                                       borderRadius: BorderRadius.circular(13),
-                                      splashColor: Colors.grey.shade300,
-                                      onTap: () => context.pushNamed(
-                                        RouteConst.itemDetails,
-                                        pathParameters: {
-                                          "itemId": currItem.itemId,
-                                        },
-                                      ),
-                                      child: Ink(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 15,
-                                          horizontal: 15,
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(13),
+                                        splashColor: Colors.grey.shade300,
+                                        onTap: () => context.pushNamed(
+                                          RouteConst.itemDetails,
+                                          pathParameters: {
+                                            "itemId": currItem.itemId,
+                                          },
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            13,
+                                        child: Ink(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 15,
+                                            horizontal: 15,
                                           ),
-                                          border: Border.all(
-                                            color: isLowStock
-                                                ? danger
-                                                : Colors.grey.shade400,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              13,
+                                            ),
+                                            border: Border.all(
+                                              color: isLowStock
+                                                  ? danger
+                                                  : Colors.grey.shade400,
+                                            ),
                                           ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                if (isLowStock)
-                                                  SizedBox(height: 25),
-                                                Row(
-                                                  children: [
-                                                    if (isLowStock)
-                                                      Icon(
-                                                        Icons
-                                                            .warning_amber_outlined,
-                                                        color: warning,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (isLowStock)
+                                                    SizedBox(height: 25),
+                                                  Row(
+                                                    children: [
+                                                      if (isLowStock)
+                                                        Icon(
+                                                          Icons
+                                                              .warning_amber_outlined,
+                                                          color: warning,
+                                                        ),
+                                                      if (isLowStock)
+                                                        SizedBox(width: 8),
+                                                      Text(
+                                                        currItem.name,
+                                                        style: boldTextStyle()
+                                                            .copyWith(
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
                                                       ),
-                                                    if (isLowStock)
-                                                      SizedBox(width: 8),
-                                                    Text(
-                                                      currItem.name,
-                                                      style: boldTextStyle()
-                                                          .copyWith(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Text(
-                                                  "Quantity: ${currItem.quantity} ${currItem.unit.name}",
-                                                  style: smallTextStyle()
-                                                      .copyWith(
-                                                        color: isLowStock
-                                                            ? danger
-                                                            : textSecondary,
-                                                        fontSize: 15,
-                                                        fontWeight: isLowStock
-                                                            ? FontWeight.w600
-                                                            : FontWeight.w400,
-                                                      ),
-                                                ),
-                                                Text(
-                                                  "Min Quantity: ${currItem.minQuantity} $unit ",
-                                                  style: smallTextStyle()
-                                                      .copyWith(
-                                                        color: textSecondary,
-                                                        fontSize: 15,
-                                                      ),
-                                                ),
-                                                SizedBox(height: 16),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    color: primary,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          100,
+                                                    ],
+                                                  ),
+                                                  Text(
+                                                    "Quantity: ${currItem.quantity} ${currItem.unit.name}",
+                                                    style: smallTextStyle()
+                                                        .copyWith(
+                                                          color: isLowStock
+                                                              ? danger
+                                                              : textSecondary,
+                                                          fontSize: 15,
+                                                          fontWeight: isLowStock
+                                                              ? FontWeight.w600
+                                                              : FontWeight.w400,
                                                         ),
                                                   ),
-                                                  child: Row(
-                                                    children: [
-                                                      Material(
-                                                        color: primary,
-                                                        clipBehavior:
-                                                            Clip.antiAlias,
-                                                        borderRadius:
-                                                            BorderRadius.horizontal(
-                                                              left:
-                                                                  Radius.circular(
-                                                                    100,
-                                                                  ),
-                                                            ),
-                                                        child: InkWell(
-                                                          splashColor: accent,
-                                                          onTap: () {
-                                                            setState(() {
-                                                              _selectedNoteItemId =
-                                                                  currItem
-                                                                      .itemId;
-                                                              _setQuantity(
-                                                                currItem.itemId,
-                                                                quantity - 1,
-                                                              );
-                                                              log(
-                                                                _quantities[currItem
-                                                                        .itemId]
-                                                                    .toString(),
-                                                              );
-                                                            });
-                                                          },
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      15,
-                                                                  vertical: 3,
-                                                                ),
-                                                            child: Text(
-                                                              "-",
-                                                              style: mediumTextStyle()
-                                                                  .copyWith(
-                                                                    color:
-                                                                        whiteText,
-                                                                    fontSize:
-                                                                        25,
-                                                                  ),
-                                                            ),
-                                                          ),
+                                                  Text(
+                                                    "Min Quantity: ${currItem.minQuantity} $unit ",
+                                                    style: smallTextStyle()
+                                                        .copyWith(
+                                                          color: textSecondary,
+                                                          fontSize: 15,
                                                         ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets.symmetric(
-                                                              horizontal: 7,
-                                                            ),
-                                                        child: SizedBox(
-                                                          width: 40,
-                                                          child: TextField(
-                                                            controller:
-                                                                quantityController,
-                                                            keyboardType:
-                                                                const TextInputType.numberWithOptions(
-                                                                  decimal: true,
-                                                                ),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: boldTextStyle()
-                                                                .copyWith(
-                                                                  color:
-                                                                      whiteText,
-                                                                  fontSize: 15,
-                                                                ),
-                                                            cursorColor:
-                                                                whiteText,
-                                                            decoration:
-                                                                const InputDecoration(
-                                                                  isDense: true,
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  contentPadding:
-                                                                      EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            6,
-                                                                      ),
-                                                                ),
+                                                  ),
+                                                  SizedBox(height: 16),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      color: primary,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            100,
+                                                          ),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Material(
+                                                          color: primary,
+                                                          clipBehavior:
+                                                              Clip.antiAlias,
+                                                          borderRadius:
+                                                              BorderRadius.horizontal(
+                                                                left:
+                                                                    Radius.circular(
+                                                                      100,
+                                                                    ),
+                                                              ),
+                                                          child: InkWell(
+                                                            splashColor: accent,
                                                             onTap: () {
                                                               setState(() {
                                                                 _selectedNoteItemId =
                                                                     currItem
                                                                         .itemId;
+                                                                _setQuantity(
+                                                                  currItem
+                                                                      .itemId,
+                                                                  quantity - 1,
+                                                                );
+                                                                log(
+                                                                  _quantities[currItem
+                                                                          .itemId]
+                                                                      .toString(),
+                                                                );
                                                               });
                                                             },
-                                                            onChanged: (value) {
-                                                              final parsed =
-                                                                  double.tryParse(
-                                                                    value,
-                                                                  );
-                                                              if (parsed ==
-                                                                  null) {
-                                                                return;
-                                                              }
-
-                                                              setState(() {
-                                                                _selectedNoteItemId =
-                                                                    currItem
-                                                                        .itemId;
-                                                                _quantities[currItem
-                                                                        .itemId] =
-                                                                    parsed < 0
-                                                                    ? 0
-                                                                    : parsed;
-                                                              });
-                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        15,
+                                                                    vertical: 3,
+                                                                  ),
+                                                              child: Text(
+                                                                "-",
+                                                                style: mediumTextStyle()
+                                                                    .copyWith(
+                                                                      color:
+                                                                          whiteText,
+                                                                      fontSize:
+                                                                          25,
+                                                                    ),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Material(
-                                                        color: primary,
-                                                        clipBehavior:
-                                                            Clip.antiAlias,
-                                                        borderRadius:
-                                                            BorderRadius.horizontal(
-                                                              right:
-                                                                  Radius.circular(
-                                                                    100,
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                horizontal: 7,
+                                                              ),
+                                                          child: SizedBox(
+                                                            width: 40,
+                                                            child: TextField(
+                                                              controller:
+                                                                  quantityController,
+                                                              keyboardType:
+                                                                  const TextInputType.numberWithOptions(
+                                                                    decimal:
+                                                                        true,
                                                                   ),
-                                                            ),
-                                                        child: InkWell(
-                                                          splashColor: accent,
-                                                          onTap: () {
-                                                            setState(() {
-                                                              _selectedNoteItemId =
-                                                                  currItem
-                                                                      .itemId;
-                                                              _setQuantity(
-                                                                currItem.itemId,
-                                                                quantity + 1,
-                                                              );
-                                                            });
-                                                          },
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      15,
-                                                                  vertical: 3,
-                                                                ),
-                                                            child: Text(
-                                                              "+",
-                                                              style: mediumTextStyle()
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: boldTextStyle()
                                                                   .copyWith(
                                                                     color:
                                                                         whiteText,
                                                                     fontSize:
-                                                                        25,
+                                                                        15,
                                                                   ),
+                                                              cursorColor:
+                                                                  whiteText,
+                                                              decoration: const InputDecoration(
+                                                                isDense: true,
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                contentPadding:
+                                                                    EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          6,
+                                                                    ),
+                                                              ),
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  _selectedNoteItemId =
+                                                                      currItem
+                                                                          .itemId;
+                                                                });
+                                                              },
+                                                              onChanged: (value) {
+                                                                final parsed =
+                                                                    double.tryParse(
+                                                                      value,
+                                                                    );
+                                                                if (parsed ==
+                                                                    null) {
+                                                                  return;
+                                                                }
+
+                                                                setState(() {
+                                                                  _selectedNoteItemId =
+                                                                      currItem
+                                                                          .itemId;
+                                                                  _quantities[currItem
+                                                                          .itemId] =
+                                                                      parsed < 0
+                                                                      ? 0
+                                                                      : parsed;
+                                                                });
+                                                              },
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                if (currItem.itemId ==
-                                                    _selectedNoteItemId)
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          vertical: 10,
-                                                        ),
-                                                    child: SizedBox(
-                                                      width: 280,
-                                                      child: textFormField(
-                                                        controller:
-                                                            _noteControllerFor(
-                                                              currItem.itemId,
+                                                        Material(
+                                                          color: primary,
+                                                          clipBehavior:
+                                                              Clip.antiAlias,
+                                                          borderRadius:
+                                                              BorderRadius.horizontal(
+                                                                right:
+                                                                    Radius.circular(
+                                                                      100,
+                                                                    ),
+                                                              ),
+                                                          child: InkWell(
+                                                            splashColor: accent,
+                                                            onTap: () {
+                                                              setState(() {
+                                                                _selectedNoteItemId =
+                                                                    currItem
+                                                                        .itemId;
+                                                                _setQuantity(
+                                                                  currItem
+                                                                      .itemId,
+                                                                  quantity + 1,
+                                                                );
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        15,
+                                                                    vertical: 3,
+                                                                  ),
+                                                              child: Text(
+                                                                "+",
+                                                                style: mediumTextStyle()
+                                                                    .copyWith(
+                                                                      color:
+                                                                          whiteText,
+                                                                      fontSize:
+                                                                          25,
+                                                                    ),
+                                                              ),
                                                             ),
-                                                        labelText:
-                                                            "Note (Optional)",
-                                                      ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                if (currItem.itemId ==
-                                                    _selectedNoteItemId)
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 120,
-                                                        child: Container(
-                                                          child: outlinedButton(
-                                                            () {
+                                                  if (currItem.itemId ==
+                                                      _selectedNoteItemId)
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            vertical: 10,
+                                                          ),
+                                                      child: SizedBox(
+                                                        width: 280,
+                                                        child: textFormField(
+                                                          controller:
+                                                              _noteControllerFor(
+                                                                currItem.itemId,
+                                                              ),
+                                                          labelText:
+                                                              "Note (Optional)",
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  if (currItem.itemId ==
+                                                      _selectedNoteItemId)
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 120,
+                                                          child: Container(
+                                                            child: outlinedButton(
+                                                              () {
+                                                                setState(() {
+                                                                  _clearEditedItem(
+                                                                    currItem
+                                                                        .itemId,
+                                                                  );
+                                                                });
+                                                              },
+                                                              Text(
+                                                                "Cancel",
+                                                                style:
+                                                                    mediumTextStyle(),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 20),
+                                                        SizedBox(
+                                                          width: 120,
+                                                          child: Container(
+                                                            child: elevatedButton(() async {
+                                                              await InventoryService().updateItemQnt(
+                                                                restaurantId: user!
+                                                                    .restaurantId,
+                                                                itemId: currItem
+                                                                    .itemId,
+                                                                itemName:
+                                                                    currItem
+                                                                        .name,
+                                                                userId:
+                                                                    user.uid,
+                                                                oldQnt: currItem
+                                                                    .quantity,
+                                                                newQnt:
+                                                                    quantity,
+                                                                note: _noteControllerFor(
+                                                                  currItem
+                                                                      .itemId,
+                                                                ).text,
+                                                              );
+                                                              ref.invalidate(
+                                                                inventoryProvider,
+                                                              );
                                                               setState(() {
                                                                 _clearEditedItem(
                                                                   currItem
                                                                       .itemId,
                                                                 );
                                                               });
-                                                            },
-                                                            Text(
-                                                              "Cancel",
-                                                              style:
-                                                                  mediumTextStyle(),
-                                                            ),
+                                                            }, "Update"),
                                                           ),
                                                         ),
-                                                      ),
-                                                      SizedBox(width: 20),
-                                                      SizedBox(
-                                                        width: 120,
-                                                        child: Container(
-                                                          child: elevatedButton(() async {
-                                                            await InventoryService().updateItemQnt(
-                                                              restaurantId: user!
-                                                                  .restaurantId,
-                                                              itemId: currItem
-                                                                  .itemId,
-                                                              itemName:
-                                                                  currItem.name,
-                                                              userId: user.uid,
-                                                              oldQnt: currItem
-                                                                  .quantity,
-                                                              newQnt: quantity,
-                                                              note:
-                                                                  _noteControllerFor(
-                                                                    currItem
-                                                                        .itemId,
-                                                                  ).text,
-                                                            );
-                                                            ref.invalidate(
-                                                              inventoryProvider,
-                                                            );
-                                                            setState(() {
-                                                              _clearEditedItem(
-                                                                currItem.itemId,
-                                                              );
-                                                            });
-                                                          }, "Update"),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                              ],
-                                            ),
-                                          ],
+                                                      ],
+                                                    ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          // )
                                         ),
-                                        // )
                                       ),
                                     ),
                                   ),
-                                ),
 
-                                Positioned(
-                                  right: 10,
-                                  top: 8,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                      vertical: 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: green,
-                                      borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(7),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      currItem.category.name,
-                                      style: TextStyle(
-                                        color: whiteText,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  // ),]
-                                ),
-                                if (isLowStock)
                                   Positioned(
-                                    left: 0,
-                                    top: 20,
+                                    right: 10,
+                                    top: 8,
                                     child: Container(
                                       padding: EdgeInsets.symmetric(
-                                        horizontal: 8,
+                                        horizontal: 5,
                                         vertical: 2,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: danger,
-                                        borderRadius: BorderRadius.horizontal(
-                                          right: Radius.circular(7),
+                                        color: green,
+                                        borderRadius: BorderRadius.vertical(
+                                          bottom: Radius.circular(7),
                                         ),
                                       ),
                                       child: Text(
-                                        "Stock Alert",
+                                        currItem.category.name,
                                         style: TextStyle(
                                           color: whiteText,
-                                          fontWeight: FontWeight.w700,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
                                     // ),]
                                   ),
-                              ],
-                            );
-                          },
-                          error: (e, s) {
-                            return Text(e.toString());
-                          },
-                          loading: () => inventoryItemSkeleton(),
-                        );
-                      }
+                                  if (isLowStock)
+                                    Positioned(
+                                      left: 0,
+                                      top: 20,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 2,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: danger,
+                                          borderRadius: BorderRadius.horizontal(
+                                            right: Radius.circular(7),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "Stock Alert",
+                                          style: TextStyle(
+                                            color: whiteText,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                      // ),]
+                                    ),
+                                ],
+                              );
+                            },
+                            error: (e, s) {
+                              return Text(e.toString());
+                            },
+                            loading: () => inventoryItemSkeleton(),
+                          );
+                        }
 
-                      if (filteredItems.isEmpty) {
-                        return Text("No items");
-                      }
-                      return null;
-                    },
+                        if (filteredItems.isEmpty) {
+                          return Text("No items");
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                 );
               },

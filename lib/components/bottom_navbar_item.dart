@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,15 +7,17 @@ import 'package:restockly/themes/color_const.dart';
 
 class BottomNavBarItem extends ConsumerWidget {
   final int idx;
-  final IconData unselectedIcon;
-  final IconData selectedIcon;
+  final IconData? unselectedIcon;
+  final IconData? selectedIcon;
+  final String? photoUrl;
   final String label;
 
   const BottomNavBarItem({
     super.key,
     required this.idx,
-    required this.unselectedIcon,
-    required this.selectedIcon,
+    this.unselectedIcon,
+    this.selectedIcon,
+    this.photoUrl = "",
     required this.label,
   });
 
@@ -32,9 +35,7 @@ class BottomNavBarItem extends ConsumerWidget {
         decoration: BoxDecoration(
           color: isSelected ? const Color.fromARGB(255, 207, 233, 255) : null,
           border: Border.all(
-            color: isSelected
-                ? lightPrimary
-                : Colors.transparent,
+            color: isSelected ? lightPrimary : Colors.transparent,
           ),
           borderRadius: BorderRadius.circular(100),
         ),
@@ -43,13 +44,16 @@ class BottomNavBarItem extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 0),
-              child: Icon(
-                // grade: -25,
-                fontWeight: FontWeight.w100,
-                size: 20,
-                isSelected ? selectedIcon : unselectedIcon,
-                color: isSelected ? primary : Colors.grey.shade600,
-              ),
+              child: photoUrl == ""
+                  ? Icon(
+                      fontWeight: FontWeight.w100,
+                      size: 20,
+                      isSelected ? selectedIcon : unselectedIcon,
+                      color: isSelected ? primary : Colors.grey.shade600,
+                    )
+                  : ClipOval(
+                    
+                    child: Image.network(photoUrl!, width: 25, height: 25,)),
             ),
             Text(
               label,

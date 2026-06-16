@@ -7,9 +7,12 @@ const String restaurantCol = "restaurants";
 const String userCol = "users";
 const String inventoryCol = "inventory";
 const String transactionCol = "transactions";
+const String joinRequestCol = "joinRequests";
 
 const String onboardingImage = "assets/images/onboarding_page.png";
 const String googleLogo = "assets/images/google.png";
+const String pendingBanner = "assets/images/pending_request_banner.png";
+const String rejectedBanner = "assets/images/rejected_request_banner.png";
 
 
 

@@ -53,7 +53,7 @@ class AuthService {
     String? restaurantId,
     String? restaurantCode,
   }) async {
-    showDefaultLoading(status: 'Applying role...');
+    showDefaultLoading(status: 'Setting up role...');
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
@@ -90,12 +90,16 @@ class AuthService {
         roleData["restaurantName"] = restaurantData["restaurantName"] ?? "";
         roleData["userApprovalStatus"] = "pending";
 
-        await FirebaseFirestore.instance.collection("joinRequests").doc().set({
+        final docRef = FirebaseFirestore.instance
+            .collection(joinRequestCol)
+            .doc();
+        await docRef.set({
+          "requestId": docRef.id,
           "userId": user.uid,
           "restaurantId": restaurantDoc.id,
           "restaurantCode": code,
           "userApprovalStatus": "pending",
-          "requestedAt": FieldValue.serverTimestamp(),
+          "requestedAt": DateTime.now(),
         });
       }
 
@@ -211,6 +215,11 @@ class AuthService {
       log(e.toString());
       return null;
     }
+  }
+
+  Future<void> signOut() async {
+    await GoogleSignIn().signOut();
+    await FirebaseAuth.instance.signOut();
   }
 }
 

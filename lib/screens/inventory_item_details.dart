@@ -322,7 +322,7 @@ class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
         );
       },
       error: (e, s) => Text(e.toString()),
-      loading: () => Center(child: CircularProgressIndicator()),
+      loading: () => Scaffold(body: Center(child: CircularProgressIndicator())),
     );
   }
 }

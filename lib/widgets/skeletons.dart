@@ -61,3 +61,15 @@ Widget inventoryItemSkeleton() {
     ),
   );
 }
+
+Widget requestTileSkeleton() {
+  return Skeletonizer(
+    enabled: true,
+    child: ListTile(
+      dense: true,
+      title: Bone.text(words: 3,),
+      subtitle: Bone.text(width: 60,),
+      trailing: Bone.button(borderRadius: BorderRadius.circular(100),height: 32,width: 110),
+    ),
+  );
+}

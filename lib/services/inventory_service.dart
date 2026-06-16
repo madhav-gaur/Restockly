@@ -30,7 +30,7 @@ class InventoryService {
       "imageUrl": imageUrl,
       "quantity": quantity,
       "minQuantity": minQuantity,
-      "createdAt": Timestamp.now(),
+      "createdAt": DateTime.now(),
       "isDeleted": false,
     });
     return item;
@@ -68,7 +68,7 @@ class InventoryService {
       "transactionType": newQnt > oldQnt ? "stockIn" : "stockOut",
       "note": note?.trim() ?? "",
       "createdBy": userId,
-      "createdAt": FieldValue.serverTimestamp(),
+      "createdAt": DateTime.now(),
     });
 
     await batch.commit();

@@ -13,7 +13,7 @@ class InventoryModel {
   Unit unit;
   double minQuantity = 0.0;
   bool? isDeleted = false;
-  Timestamp createdAt;
+  DateTime createdAt;
 
   InventoryModel({
     required this.itemId,
@@ -56,7 +56,9 @@ class InventoryModel {
       quantity: map["quantity"] ?? 0,
       minQuantity: map["minQuantity"] ?? 0,
       isDeleted: map["isDeleted"] ?? false,
-      createdAt: map["createdAt"] ?? (map["createdAt"]),
+      createdAt: map["createdAt"] != null
+          ? (map["createdAt"] as Timestamp).toDate()
+          : DateTime.now(),
     );
   }
 }

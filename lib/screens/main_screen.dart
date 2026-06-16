@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -6,6 +8,7 @@ import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/screens/home.dart';
 import 'package:restockly/screens/inventory.dart';
 import 'package:restockly/screens/profile.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   final int initialIndex;
@@ -54,7 +57,6 @@ class _HomeState extends ConsumerState<MainScreen> {
             color: Colors.transparent,
             child: Container(
               height: 55,
-              // margin: EdgeInsets.fromLTRB(16, 0, 16, 20),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade300),
 
@@ -85,11 +87,20 @@ class _HomeState extends ConsumerState<MainScreen> {
                     selectedIcon: Icons.category,
                     label: "Inventory",
                   ),
-                  BottomNavBarItem(
-                    idx: 2,
-                    unselectedIcon: Icons.settings_outlined,
-                    selectedIcon: Icons.settings,
-                    label: "Profile",
+                  user.when(
+                    data: (user) {
+                      // log(user?.photoUrl != null ? user.photoUrl : "no");
+                      return BottomNavBarItem(
+                        idx: 2,
+                        unselectedIcon: Icons.person_2_outlined,
+                        selectedIcon: Icons.person_2_rounded,
+                        label: "You",
+                        photoUrl: user?.photoUrl ?? "",
+                      );
+                    },
+                    error: (e, s) => Text(""),
+                    loading: () =>
+                        Skeletonizer(enabled: true, child: Bone.circle()),
                   ),
                 ],
               ),

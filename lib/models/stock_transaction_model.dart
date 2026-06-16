@@ -39,10 +39,8 @@ class StockTransactionModel {
           : TransactionType.stockIn,
       note: map["note"] ?? "",
       createdBy: map["createdBy"] ?? "",
-      createdAt: createdAt is Timestamp
-          ? createdAt.toDate()
-          : createdAt is DateTime
-          ? createdAt
+      createdAt: map["createdAt"] != null
+          ? (map["createdAt"] as Timestamp).toDate()
           : DateTime.now(),
     );
   }

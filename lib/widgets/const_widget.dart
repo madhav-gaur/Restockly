@@ -46,7 +46,7 @@ Container boldContainer({required String text, IconData? icon}) {
   );
 }
 
-Widget elevatedButton(VoidCallback onPressed, String text) {
+Widget elevatedButton(VoidCallback onPressed, String text, ) {
   return SizedBox(
     width: double.infinity,
     child: ElevatedButton(

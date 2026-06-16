@@ -16,6 +16,6 @@ const Color surface = Color(0xFFFFFFFF);
 
 const Color textPrimary = Color.fromARGB(255, 0, 0, 0);
 const Color textSecondary = Color.fromARGB(255, 90, 90, 90);
-const Color textTertiary = Color.fromARGB(255, 132, 151, 177);
+const Color textTertiary = Color.fromARGB(255, 164, 164, 164);
 const Color whiteText = Colors.white;
 const Color border = Color(0xFFE2E8F0);

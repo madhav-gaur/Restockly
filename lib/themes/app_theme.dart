@@ -7,6 +7,11 @@ class AppTheme {
       fontFamily: 'Inter',
       primaryColor: primary,
       scaffoldBackgroundColor: surface,
+      textSelectionTheme: const TextSelectionThemeData(
+        selectionHandleColor: secondary,
+        cursorColor: textSecondary,
+        selectionColor: lightPrimary,
+      ),
       progressIndicatorTheme: ProgressIndicatorThemeData(color: textPrimary),
       appBarTheme: AppBarTheme(
         scrolledUnderElevation: 0,
