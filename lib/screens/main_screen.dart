@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:restockly/components/bottom_navbar_item.dart';
 import 'package:restockly/providers/user_provider.dart';
-import 'package:restockly/screens/home.dart';
-import 'package:restockly/screens/inventory.dart';
-import 'package:restockly/screens/profile.dart';
+import 'package:restockly/screens/home_screen.dart';
+import 'package:restockly/screens/inventory_screen.dart';
+import 'package:restockly/screens/profile_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
@@ -32,7 +32,7 @@ class _HomeState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     final currIdx = ref.watch(selectedIndex);
 
-    final List<Widget> pages = [Home(), Inventory(), Profile()];
+    final List<Widget> pages = [HomeScreen(), InventoryScreen(), ProfileScreen()];
     final user = ref.watch(currentUserProvider);
     return Stack(
       children: [

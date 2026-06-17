@@ -9,62 +9,44 @@ import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/services/auth_service.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class SigninScreen extends StatefulWidget {
+  const SigninScreen({super.key});
 
   @override
-  State<Signup> createState() => _SignupState();
+  State<SigninScreen> createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
-  late TextEditingController _nameController;
+class _SignupState extends State<SigninScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
-  late TextEditingController _restNameController;
-  late TextEditingController _restIdController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
-    _restNameController = TextEditingController();
-    _restIdController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _restNameController.dispose();
-    _restIdController.dispose();
     super.dispose();
   }
 
   Role? selectedRole = Role.manager;
   final _formKey = GlobalKey<FormState>();
 
-  void _handleSignUp() async {
-
+  void _handleSignIn() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final fullName = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     log(email.toString());
-    final user = await AuthService().signUp(
-      name: fullName,
-      email: email,
-      password: password,
-    );
-    if (user != null && mounted) {
+    final user = await AuthService().signIn(email: email, password: password);
+    if (user != null) {
       log("go to role selection");
-      context.goNamed(RouteConst.roleSelection);
+      context.goNamed(RouteConst.mainScreen);
     }
   }
 
@@ -72,7 +54,7 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: Text("Sign In"),
         leading: IconButton(
           onPressed: () {
             context.goNamed(RouteConst.onboarding);
@@ -87,19 +69,6 @@ class _SignupState extends State<Signup> {
           child: ListView(
             children: [
               SizedBox(height: 10),
-              Container(
-                child: textFormField(
-                  controller: _nameController,
-                  labelText: "Full Name",
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "*Required field";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              SizedBox(height: 20),
               Container(
                 child: textFormField(
                   controller: _emailController,
@@ -131,28 +100,10 @@ class _SignupState extends State<Signup> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-              Container(
-                child: textFormField(
-                  controller: _confirmPasswordController,
-                  labelText: "Comfirm Password",
-                  isClearButton: false,
-                  isObscureText: true,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "*Required field";
-                    }
-                    if (value != _passwordController.text) {
-                      return "Password and Confirm Password should match";
-                    }
-                    return null;
-                  },
-                ),
-              ),
               SizedBox(height: 30),
               elevatedButton(() {
-                _handleSignUp();
-              }, "Sign up"),
+                _handleSignIn();
+              }, "Sign in"),
               Row(
                 children: [
                   Expanded(child: Divider()),
@@ -185,7 +136,7 @@ class _SignupState extends State<Signup> {
                   children: [
                     Image.asset(googleLogo, width: 20),
                     SizedBox(width: 10),
-                    Text("Sign up with Google", style: boldTextStyle()),
+                    Text("Sign in  with Google", style: boldTextStyle()),
                   ],
                 ),
               ),
@@ -194,10 +145,10 @@ class _SignupState extends State<Signup> {
                 child: InkWell(
                   splashColor: Colors.transparent,
                   onTap: () {
-                    context.goNamed(RouteConst.signin);
+                    context.goNamed(RouteConst.signup);
                   },
                   child: Text(
-                    "Already a user? Sign in",
+                    "New user? Create an Account",
                     textAlign: TextAlign.center,
                     style: smallTextStyle().copyWith(
                       decoration: TextDecoration.underline,

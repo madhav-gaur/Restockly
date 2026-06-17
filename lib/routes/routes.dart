@@ -5,17 +5,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restockly/constants.dart';
 import 'package:restockly/routes/route_const.dart';
-import 'package:restockly/screens/add_inventory.dart';
-import 'package:restockly/screens/all_stock_transactions.dart';
-import 'package:restockly/screens/inventory_item_details.dart';
-import 'package:restockly/screens/join_request.dart';
+import 'package:restockly/screens/add_inventory_screen.dart';
+import 'package:restockly/screens/all_stock_transactions_screen.dart';
+import 'package:restockly/screens/inventory_item_details_screen.dart';
+import 'package:restockly/screens/join_request_screen.dart';
 import 'package:restockly/screens/main_screen.dart';
-import 'package:restockly/screens/onboarding.dart';
+import 'package:restockly/screens/onboarding_screen.dart';
 import 'package:restockly/screens/pending_request_screen.dart';
 import 'package:restockly/screens/rejected_request_screen.dart';
-import 'package:restockly/screens/role_selection.dart';
-import 'package:restockly/screens/signin.dart';
-import 'package:restockly/screens/signup.dart';
+import 'package:restockly/screens/role_selection_screen.dart';
+import 'package:restockly/screens/signin_screen.dart';
+import 'package:restockly/screens/signup_screen.dart';
 import 'package:restockly/screens/stock_transaction_details.dart';
 
 final GoRouter route = GoRouter(
@@ -78,22 +78,22 @@ final GoRouter route = GoRouter(
     GoRoute(
       name: RouteConst.onboarding,
       path: '/auth/onboarding',
-      builder: (context, state) => const Onboarding(),
+      builder: (context, state) => const OnboardingScreen(),
     ),
     GoRoute(
       name: RouteConst.signup,
       path: '/auth/signup',
-      builder: (context, state) => const Signup(),
+      builder: (context, state) => const SignupScreen(),
     ),
     GoRoute(
       name: RouteConst.roleSelection,
       path: '/auth/role-selection',
-      builder: (context, state) => const RoleSelection(),
+      builder: (context, state) => const RoleSelectionScreen(),
     ),
     GoRoute(
       name: RouteConst.signin,
       path: '/auth/signin',
-      builder: (context, state) => const Signin(),
+      builder: (context, state) => const SigninScreen(),
     ),
     GoRoute(
       name: RouteConst.mainScreen,
@@ -103,7 +103,7 @@ final GoRouter route = GoRouter(
     GoRoute(
       name: RouteConst.addInventory,
       path: "/add-inventory",
-      builder: (context, state) => const AddInventory(),
+      builder: (context, state) => const AddInventoryScreen(),
     ),
 
     GoRoute(
@@ -111,7 +111,7 @@ final GoRouter route = GoRouter(
       path: "/item-details/:itemId",
       builder: (context, state) {
         final itemId = state.pathParameters["itemId"];
-        return InventoryItemDetails(itemId: itemId!);
+        return InventoryItemDetailsScreen(itemId: itemId!);
       },
     ),
     GoRoute(
@@ -126,7 +126,7 @@ final GoRouter route = GoRouter(
     GoRoute(
       name: RouteConst.joinRequest,
       path: "/join-request",
-      builder: (context, state) => const JoinRequest(),
+      builder: (context, state) => const JoinRequestScreen(),
     ),
     GoRoute(
       name: RouteConst.requestPending,
@@ -141,7 +141,7 @@ final GoRouter route = GoRouter(
     GoRoute(
       name: RouteConst.allStockTransactions,
       path: "/all-stock-transactions",
-      builder: (context, state) => const AllStockTransactions(),
+      builder: (context, state) => const AllStockTransactionsScreen(),
     ),
   ],
 );

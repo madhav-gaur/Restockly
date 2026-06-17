@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restockly/screens/home.dart';
+import 'package:restockly/screens/home_screen.dart';
 import 'package:restockly/themes/color_const.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

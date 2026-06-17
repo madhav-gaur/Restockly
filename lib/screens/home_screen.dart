@@ -15,14 +15,14 @@ import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class Home extends ConsumerStatefulWidget {
-  const Home({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  ConsumerState<Home> createState() => _HomeState();
+  ConsumerState<HomeScreen> createState() => _HomeState();
 }
 
-class _HomeState extends ConsumerState<Home> {
+class _HomeState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.read(currentUserProvider);

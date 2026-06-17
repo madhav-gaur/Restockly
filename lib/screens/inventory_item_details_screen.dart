@@ -16,15 +16,15 @@ import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class InventoryItemDetails extends ConsumerStatefulWidget {
+class InventoryItemDetailsScreen extends ConsumerStatefulWidget {
   final String itemId;
-  const InventoryItemDetails({super.key, required this.itemId});
+  const InventoryItemDetailsScreen({super.key, required this.itemId});
 
   @override
-  ConsumerState<InventoryItemDetails> createState() => _ItemDetailsState();
+  ConsumerState<InventoryItemDetailsScreen> createState() => _ItemDetailsState();
 }
 
-class _ItemDetailsState extends ConsumerState<InventoryItemDetails> {
+class _ItemDetailsState extends ConsumerState<InventoryItemDetailsScreen> {
   @override
   void initState() {
     super.initState();

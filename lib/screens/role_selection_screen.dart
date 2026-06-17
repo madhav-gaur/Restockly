@@ -8,14 +8,14 @@ import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/services/auth_service.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
-class RoleSelection extends ConsumerStatefulWidget {
-  const RoleSelection({super.key});
+class RoleSelectionScreen extends ConsumerStatefulWidget {
+  const RoleSelectionScreen({super.key});
 
   @override
-  ConsumerState<RoleSelection> createState() => _SignupState();
+  ConsumerState<RoleSelectionScreen> createState() => _SignupState();
 }
 
-class _SignupState extends ConsumerState<RoleSelection> {
+class _SignupState extends ConsumerState<RoleSelectionScreen> {
   late TextEditingController _restNameController;
   late TextEditingController _restCodeController;
 

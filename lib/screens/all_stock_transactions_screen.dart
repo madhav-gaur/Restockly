@@ -8,14 +8,14 @@ import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
 
-class AllStockTransactions extends ConsumerStatefulWidget {
-  const AllStockTransactions({super.key});
+class AllStockTransactionsScreen extends ConsumerStatefulWidget {
+  const AllStockTransactionsScreen({super.key});
 
   @override
-  ConsumerState<AllStockTransactions> createState() => _ItemDetailsState();
+  ConsumerState<AllStockTransactionsScreen> createState() => _ItemDetailsState();
 }
 
-class _ItemDetailsState extends ConsumerState<AllStockTransactions> {
+class _ItemDetailsState extends ConsumerState<AllStockTransactionsScreen> {
   late TextEditingController _searchController;
 
   @override

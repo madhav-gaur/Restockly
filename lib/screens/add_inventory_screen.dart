@@ -9,14 +9,14 @@ import 'package:restockly/providers/user_provider.dart';
 import 'package:restockly/services/inventory_service.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
-class AddInventory extends ConsumerStatefulWidget {
-  const AddInventory({super.key});
+class AddInventoryScreen extends ConsumerStatefulWidget {
+  const AddInventoryScreen({super.key});
 
   @override
-  ConsumerState<AddInventory> createState() => _AddInventoryState();
+  ConsumerState<AddInventoryScreen> createState() => _AddInventoryState();
 }
 
-class _AddInventoryState extends ConsumerState<AddInventory> {
+class _AddInventoryState extends ConsumerState<AddInventoryScreen> {
   final InventoryService _inventoryService = InventoryService();
   late TextEditingController _nameController;
   late TextEditingController _quantityController;

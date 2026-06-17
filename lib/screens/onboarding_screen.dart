@@ -4,8 +4,8 @@ import 'package:restockly/constants.dart';
 import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
-class Onboarding extends StatelessWidget {
-  const Onboarding({super.key});
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

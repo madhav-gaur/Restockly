@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:restockly/constants.dart';
 import 'package:restockly/models/user_model.dart';
 import 'package:restockly/providers/user_provider.dart';
+import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/themes/color_const.dart';
 import 'package:restockly/utils/capitilize.dart';
 import 'package:restockly/widgets/const_widget.dart';
 
-class Profile extends ConsumerStatefulWidget {
-  const Profile({super.key});
+class ProfileScreen extends ConsumerStatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  ConsumerState<Profile> createState() => _ProfileState();
+  ConsumerState<ProfileScreen> createState() => _ProfileState();
 }
 
-class _ProfileState extends ConsumerState<Profile> {
+class _ProfileState extends ConsumerState<ProfileScreen> {
   final ScrollController _scrollController = ScrollController();
 
   bool showAppBar = false;
@@ -173,8 +175,11 @@ class _ProfileState extends ConsumerState<Profile> {
                   ),
                 ),
                 SizedBox(height: 12),
-                settingsTile(title: "Edit Profile"),
-                settingsTile(title: "View Activity"),
+                settingsTile(title: "Edit ProfileScreen"),
+                settingsTile(
+                  title: "View Activity",
+                  onTap: () => context.pushNamed(RouteConst.allStockTransactions),
+                ),
                 settingsTile(title: "Share Restaurant's Code"),
                 if (isManager) settingsTile(title: "Pending Requests"),
                 if (isManager) settingsTile(title: "Manage Staffs"),
@@ -216,11 +221,15 @@ Widget _detailTile(IconData icon, String title, String value) {
   );
 }
 
-Widget settingsTile({required String title, bool? isDanger = false}) {
+Widget settingsTile({
+  required String title,
+  bool? isDanger = false,
+  VoidCallback? onTap,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: ListTile(
-      onTap: () {},
+      onTap: onTap,
       tileColor: background,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),

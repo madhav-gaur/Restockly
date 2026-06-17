@@ -11,14 +11,14 @@ import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class JoinRequest extends ConsumerStatefulWidget {
-  const JoinRequest({super.key});
+class JoinRequestScreen extends ConsumerStatefulWidget {
+  const JoinRequestScreen({super.key});
 
   @override
-  ConsumerState<JoinRequest> createState() => _JoinRequestState();
+  ConsumerState<JoinRequestScreen> createState() => _JoinRequestState();
 }
 
-class _JoinRequestState extends ConsumerState<JoinRequest> {
+class _JoinRequestState extends ConsumerState<JoinRequestScreen> {
   @override
   Widget build(BuildContext context) {
     final joinRequest = ref.watch(joinRequestProvider);

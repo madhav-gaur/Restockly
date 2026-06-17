@@ -13,14 +13,14 @@ import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class Inventory extends ConsumerStatefulWidget {
-  const Inventory({super.key});
+class InventoryScreen extends ConsumerStatefulWidget {
+  const InventoryScreen({super.key});
 
   @override
-  ConsumerState<Inventory> createState() => _InventoryState();
+  ConsumerState<InventoryScreen> createState() => _InventoryState();
 }
 
-class _InventoryState extends ConsumerState<Inventory> {
+class _InventoryState extends ConsumerState<InventoryScreen> {
   String? _selectedNoteItemId;
   final Map<String, double> _quantities = {};
   final Map<String, TextEditingController> _quantityControllers = {};
