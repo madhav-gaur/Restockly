@@ -7,6 +7,7 @@ final inventoryRepoProvider = Provider((ref) => InventoryRepo());
 
 final inventoryProvider = FutureProvider<List<InventoryModel?>>((ref) async {
   final user = await ref.watch(currentUserProvider.future);
+  // await Future.delayed(const Duration(minutes: 30));
 
   if (user == null) {
     return [];

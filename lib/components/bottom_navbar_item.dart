@@ -42,8 +42,7 @@ class BottomNavBarItem extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: .center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0),
+            Container(
               child: photoUrl == ""
                   ? Icon(
                       fontWeight: FontWeight.w100,

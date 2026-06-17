@@ -33,6 +33,8 @@ class _SignupState extends ConsumerState<RoleSelection> {
     super.dispose();
   }
 
+  bool _restaurantExists = false;
+
   Role? selectedRole = Role.manager;
   final _formKey = GlobalKey<FormState>();
   Future<void> _addRole() async {
@@ -123,9 +125,21 @@ class _SignupState extends ConsumerState<RoleSelection> {
                             return "*Required field";
                           }
                           if (code.length != 6) {
-                            return "Invalid code";
+                            return "6 Character code is must";
                           }
-                          return null;
+                          if(!_restaurantExists) {
+                            return "Restaurant Does't Exists";
+                          }
+                        },
+                        onChanged: (code) async {
+                          if (code.trim().length == 6) {
+                            final exists = await AuthService()
+                                .checkIsRestaurant(code.trim());
+
+                            setState(() {
+                              _restaurantExists = exists;
+                            });
+                          }
                         },
                       ),
                     ),

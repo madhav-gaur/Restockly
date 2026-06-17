@@ -11,6 +11,7 @@ class RouteConst {
   static String joinRequest = '/join-request';
   static String requestPending = '/request-pending';
   static String requestRejected = '/request-rejected';
+  static String allStockTransactions = '/all-stock-transactions';
 
   // static String verifyEmail = '/verify-email';
 }

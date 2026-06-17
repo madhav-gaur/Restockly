@@ -60,14 +60,13 @@ class _HomeState extends ConsumerState<MainScreen> {
 
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: Colors.black26,
                     blurRadius: 20,
                     spreadRadius: 0,
-                    offset: const Offset(0, 8),
+                    offset: const Offset(0, 14),
                   ),
                 ],
                 color: Colors.grey.shade100,
-
                 borderRadius: BorderRadius.circular(33),
               ),
               child: Row(
@@ -87,7 +86,6 @@ class _HomeState extends ConsumerState<MainScreen> {
                   ),
                   user.when(
                     data: (user) {
-                      // log(user?.photoUrl != null ? user.photoUrl : "no");
                       return BottomNavBarItem(
                         idx: 2,
                         unselectedIcon: Icons.person_2_outlined,

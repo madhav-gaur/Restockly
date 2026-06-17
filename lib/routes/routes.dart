@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:restockly/constants.dart';
 import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/screens/add_inventory.dart';
+import 'package:restockly/screens/all_stock_transactions.dart';
 import 'package:restockly/screens/inventory_item_details.dart';
 import 'package:restockly/screens/join_request.dart';
 import 'package:restockly/screens/main_screen.dart';
@@ -136,6 +137,11 @@ final GoRouter route = GoRouter(
       name: RouteConst.requestRejected,
       path: "/request-rejected",
       builder: (context, state) => const RejectedRequestScreen(),
+    ),
+    GoRoute(
+      name: RouteConst.allStockTransactions,
+      path: "/all-stock-transactions",
+      builder: (context, state) => const AllStockTransactions(),
     ),
   ],
 );

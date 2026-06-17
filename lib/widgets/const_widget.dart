@@ -88,6 +88,7 @@ Widget textFormField({
   required TextEditingController controller,
   required String labelText,
   FormFieldValidator? validator,
+  ValueChanged<String>? onChanged,
   TextInputType inputType = TextInputType.text,
   bool isClearButton = true,
   bool isObscureText = false,
@@ -96,6 +97,7 @@ Widget textFormField({
     controller: controller,
     labelText: labelText,
     validator: validator,
+    onChanged: onChanged,
     isClearButton: isClearButton,
     isObscureText: isObscureText,
     inputType: inputType,
@@ -106,6 +108,7 @@ class _CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final FormFieldValidator? validator;
+  final ValueChanged<String>? onChanged;
   final bool isClearButton;
   final bool isObscureText;
   final TextInputType inputType;
@@ -114,6 +117,7 @@ class _CustomTextFormField extends StatefulWidget {
     required this.controller,
     required this.labelText,
     this.validator,
+    this.onChanged,
     this.isClearButton = true,
     this.isObscureText = false,
     this.inputType = TextInputType.text,
@@ -148,6 +152,7 @@ class _CustomTextFormFieldState extends State<_CustomTextFormField> {
 
     return TextFormField(
       controller: widget.controller,
+      onChanged: widget.onChanged,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: _obscure,
       validator: widget.validator,

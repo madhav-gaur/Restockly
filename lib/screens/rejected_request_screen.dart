@@ -23,6 +23,9 @@ class RejectedRequestScreen extends ConsumerWidget {
         padding: defaultPagePadding(),
         child: reqAsync.when(
           data: (currReq) {
+            if (currReq == null) {
+              return Center(child: Text("Something went Wrong"));
+            }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -39,7 +42,7 @@ class RejectedRequestScreen extends ConsumerWidget {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  "Requested ${DateFormat("d MMM, h:mm a").format(currReq!.requestedAt)}",
+                  "Requested ${DateFormat("d MMM, h:mm a").format(currReq.requestedAt)}",
                   style: mediumTextStyle().copyWith(color: textTertiary),
                 ),
                 SizedBox(height: 30),

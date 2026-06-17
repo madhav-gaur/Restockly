@@ -13,6 +13,7 @@ import 'package:restockly/services/auth_service.dart';
 import 'package:restockly/themes/color_const.dart';
 import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});
@@ -24,7 +25,8 @@ class Home extends ConsumerStatefulWidget {
 class _HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(currentUserProvider);
+    final user = ref.read(currentUserProvider);
+    final userData = user.value;
     final inventoryAsync = ref.watch(inventoryProvider);
     final memberAsync = ref.watch(allRestaurantMembersProvider);
     final transactionAsync = ref.watch(stockTransactionProvider);
@@ -63,7 +65,6 @@ class _HomeState extends ConsumerState<Home> {
                 .length;
             return ListView(
               children: [
-                // Text(user!.restaurantName, style: smallTextStyle()),
                 Row(
                   children: [
                     homeCard(
@@ -117,25 +118,40 @@ class _HomeState extends ConsumerState<Home> {
                   style: mediumTextStyle().copyWith(fontSize: 18),
                 ),
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    quickActionBtn(() {}, "Add Item", Icons.add_box_outlined),
-                    const SizedBox(width: 10),
-                    quickActionBtn(() {}, "Manage Team", Icons.groups_outlined),
-                  ],
-                ),
+                if (userData?.role == Role.manager)
+                  Row(
+                    children: [
+                      quickActionBtn(
+                        () {
+                          context.pushNamed(RouteConst.addInventory);
+                        },
+                        "Add Item",
+                        Icons.add_box_outlined,
+                      ),
+                      const SizedBox(width: 10),
+                      quickActionBtn(
+                        () {
+                          context.pushNamed(RouteConst.joinRequest);
+                        },
+                        "Join Requests",
+                        Icons.person_add_alt_1_outlined,
+                      ),
+                    ],
+                  ),
 
                 const SizedBox(height: 10),
 
                 Row(
                   children: [
-                    quickActionBtn(() {}, "View Activity", Icons.history),
-                    const SizedBox(width: 10),
                     quickActionBtn(
-                      () {},
-                      "Join Requests",
-                      Icons.person_add_alt_1_outlined,
+                      () {
+                        context.pushNamed(RouteConst.allStockTransactions);
+                      },
+                      "View Activity",
+                      Icons.history,
                     ),
+                    const SizedBox(width: 10),
+                    quickActionBtn(() {}, "Manage Team", Icons.groups_outlined),
                   ],
                 ),
 
@@ -169,10 +185,9 @@ class _HomeState extends ConsumerState<Home> {
                               padding: const EdgeInsets.all(8),
                               child: outlinedButton(
                                 () {
-                                  // context.pushNamed(
-                                  //   RouteConst.stockTransactionDetails,
-                                  //   pathParameters: {"itemId": item.itemId},
-                                  // );
+                                  context.pushNamed(
+                                    RouteConst.allStockTransactions,
+                                  );
                                 },
                                 Text(
                                   "See All Transactions",
@@ -228,11 +243,12 @@ class _HomeState extends ConsumerState<Home> {
                     context.go(RouteConst.signup);
                   }
                 }, "Sign oute"),
+                SizedBox(height: 150),
               ],
             );
           },
           error: (e, s) => Text(e.toString()),
-          loading: () => CircularProgressIndicator(),
+          loading: () => homeSkeletons(),
         ),
       ),
     );

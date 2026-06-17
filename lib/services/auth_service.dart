@@ -47,6 +47,15 @@ class AuthService {
     return null;
   }
 
+  Future<bool> checkIsRestaurant(String restaurantCode) async {
+    final snapshots = await FirebaseFirestore.instance
+        .collection(restaurantCol)
+        .where('restaurantCode', isEqualTo: restaurantCode).get();
+
+      if(snapshots.docs.isEmpty) return false;
+      return true;
+  }
+
   Future<bool> addRoleToFirestore({
     required Role role,
     String? restaurantName,
