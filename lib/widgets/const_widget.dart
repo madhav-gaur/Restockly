@@ -46,7 +46,7 @@ Container boldContainer({required String text, IconData? icon}) {
   );
 }
 
-Widget elevatedButton(VoidCallback onPressed, String text, ) {
+Widget elevatedButton(VoidCallback onPressed, String text) {
   return SizedBox(
     width: double.infinity,
     child: ElevatedButton(
@@ -92,6 +92,7 @@ Widget textFormField({
   TextInputType inputType = TextInputType.text,
   bool isClearButton = true,
   bool isObscureText = false,
+  bool readOnly = false,
 }) {
   return _CustomTextFormField(
     controller: controller,
@@ -101,6 +102,7 @@ Widget textFormField({
     isClearButton: isClearButton,
     isObscureText: isObscureText,
     inputType: inputType,
+    readOnly: readOnly,
   );
 }
 
@@ -112,6 +114,7 @@ class _CustomTextFormField extends StatefulWidget {
   final bool isClearButton;
   final bool isObscureText;
   final TextInputType inputType;
+  final bool readOnly;
 
   const _CustomTextFormField({
     required this.controller,
@@ -120,6 +123,7 @@ class _CustomTextFormField extends StatefulWidget {
     this.onChanged,
     this.isClearButton = true,
     this.isObscureText = false,
+    this.readOnly = false,
     this.inputType = TextInputType.text,
   });
 
@@ -148,9 +152,13 @@ class _CustomTextFormFieldState extends State<_CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     final showClear =
-        widget.isClearButton && widget.controller.text.isNotEmpty && !_obscure;
+        widget.isClearButton &&
+        widget.controller.text.isNotEmpty &&
+        !_obscure &&
+        !widget.readOnly;
 
     return TextFormField(
+      readOnly: widget.readOnly,
       controller: widget.controller,
       onChanged: widget.onChanged,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -253,8 +261,8 @@ void showErrorMessage({String status = "Loading"}) {
   EasyLoading.showError(status);
 }
 
-void showInfoMessage({String status = "Loading"}) {
-  EasyLoading.showInfo(status);
+void showInfoMessage({String status = "Loading", Duration? d}) {
+  EasyLoading.showInfo(status, duration: d);
 }
 
 void hideLoading() {

@@ -7,6 +7,7 @@ import 'package:restockly/constants.dart';
 import 'package:restockly/routes/route_const.dart';
 import 'package:restockly/screens/add_inventory_screen.dart';
 import 'package:restockly/screens/all_stock_transactions_screen.dart';
+import 'package:restockly/screens/edit_profile_screen.dart';
 import 'package:restockly/screens/inventory_item_details_screen.dart';
 import 'package:restockly/screens/join_request_screen.dart';
 import 'package:restockly/screens/main_screen.dart';
@@ -142,6 +143,11 @@ final GoRouter route = GoRouter(
       name: RouteConst.allStockTransactions,
       path: "/all-stock-transactions",
       builder: (context, state) => const AllStockTransactionsScreen(),
+    ),
+    GoRoute(
+      name: RouteConst.editProfile,
+      path: "/edit-profile",
+      builder: (context, state) => const EditProfileScreen(),
     ),
   ],
 );

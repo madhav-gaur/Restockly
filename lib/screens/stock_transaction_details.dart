@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:restockly/components/transaction_list_tile.dart';
 import 'package:restockly/models/stock_transaction_model.dart';
 import 'package:restockly/providers/inventory_provider.dart';
 import 'package:restockly/providers/stock_transaction_provider.dart';
 import 'package:restockly/providers/user_provider.dart';
-import 'package:restockly/themes/color_const.dart';
 import 'package:restockly/widgets/const_widget.dart';
 import 'package:restockly/widgets/skeletons.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class StockTransactionDetails extends ConsumerStatefulWidget {
   final String itemId;

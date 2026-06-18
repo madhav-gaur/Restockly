@@ -175,20 +175,57 @@ class _ProfileState extends ConsumerState<ProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 12),
-                settingsTile(title: "Edit ProfileScreen"),
+                settingsTile(
+                  title: "Edit Profile",
+                  icon: Icons.edit,
+                  onTap: () => context.pushNamed(RouteConst.editProfile),
+                ),
                 settingsTile(
                   title: "View Activity",
-                  onTap: () => context.pushNamed(RouteConst.allStockTransactions),
+                  icon: Icons.history,
+                  onTap: () =>
+                      context.pushNamed(RouteConst.allStockTransactions),
                 ),
-                settingsTile(title: "Share Restaurant's Code"),
-                if (isManager) settingsTile(title: "Pending Requests"),
-                if (isManager) settingsTile(title: "Manage Staffs"),
-                if (!isManager) settingsTile(title: "View Members"),
-                if (!isManager) settingsTile(title: "My Activity"),
-                settingsTile(title: "Leave Restaurant", isDanger: true),
-                settingsTile(title: "Sign Out", isDanger: true),
+                settingsTile(
+                  title: "Share Restaurant's Code",
+                  icon: Icons.share_outlined,
+                ),
                 if (isManager)
-                  settingsTile(title: "Delete Restuarant", isDanger: true),
+                  settingsTile(
+                    title: "Pending Requests",
+                    icon: Icons.notifications_active_outlined,
+                  ),
+                if (isManager)
+                  settingsTile(
+                    title: "Manage Staffs",
+                    icon: Icons.groups_2_outlined,
+                  ),
+                if (!isManager)
+                  settingsTile(
+                    title: "View Members",
+                    icon: Icons.group_outlined,
+                  ),
+                if (!isManager)
+                  settingsTile(
+                    title: "My Activity",
+                    icon: Icons.local_activity_outlined,
+                  ),
+                settingsTile(
+                  title: "Leave Restaurant",
+                  isDanger: true,
+                  icon: Icons.outbox_outlined,
+                ),
+                settingsTile(
+                  title: "Sign Out",
+                  isDanger: true,
+                  icon: Icons.logout,
+                ),
+                if (isManager)
+                  settingsTile(
+                    title: "Delete Restuarant",
+                    isDanger: true,
+                    icon: Icons.delete_forever_rounded,
+                  ),
                 // settingsTile("Share Restaurant's Code"),
                 SizedBox(height: 100),
               ],
@@ -225,12 +262,14 @@ Widget settingsTile({
   required String title,
   bool? isDanger = false,
   VoidCallback? onTap,
+  IconData? icon,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: ListTile(
       onTap: onTap,
       tileColor: background,
+      contentPadding: EdgeInsets.symmetric(horizontal: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),
         side: BorderSide(color: isDanger! ? danger : Colors.grey.shade300),
@@ -238,11 +277,18 @@ Widget settingsTile({
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: mediumTextStyle().copyWith(
-              color: isDanger ? danger : const Color.fromARGB(255, 0, 0, 0),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(icon, color: isDanger ? danger : textPrimary),
+              SizedBox(width: 10),
+              Text(
+                title,
+                style: mediumTextStyle().copyWith(
+                  color: isDanger ? danger : const Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ],
           ),
           Icon(Icons.arrow_forward_ios_outlined, size: 20, color: textTertiary),
         ],

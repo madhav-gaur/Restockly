@@ -127,9 +127,10 @@ class _SignupState extends ConsumerState<RoleSelectionScreen> {
                           if (code.length != 6) {
                             return "6 Character code is must";
                           }
-                          if(!_restaurantExists) {
+                          if (!_restaurantExists) {
                             return "Restaurant Does't Exists";
                           }
+                          return null;
                         },
                         onChanged: (code) async {
                           if (code.trim().length == 6) {

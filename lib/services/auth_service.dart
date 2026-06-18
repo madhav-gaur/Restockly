@@ -50,10 +50,11 @@ class AuthService {
   Future<bool> checkIsRestaurant(String restaurantCode) async {
     final snapshots = await FirebaseFirestore.instance
         .collection(restaurantCol)
-        .where('restaurantCode', isEqualTo: restaurantCode).get();
+        .where('restaurantCode', isEqualTo: restaurantCode)
+        .get();
 
-      if(snapshots.docs.isEmpty) return false;
-      return true;
+    if (snapshots.docs.isEmpty) return false;
+    return true;
   }
 
   Future<bool> addRoleToFirestore({
@@ -229,6 +230,15 @@ class AuthService {
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> updateProfile({String? name, String? photoUrl}) async {
+    final currUser = _auth.currentUser;
+    if (currUser == null) return;
+    await FirebaseFirestore.instance
+        .collection(userCol)
+        .doc(currUser.uid)
+        .update({"name": name, "photoUrl": photoUrl});
   }
 }
 
